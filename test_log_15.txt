@@ -1,0 +1,48 @@
+> Task :clean
+> Task :compileJava
+> Task :processResources
+> Task :classes
+
+> Task :compileTestJava
+C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\src\test\java\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\CompanyControllerTest.java:31: warning: [removal] MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+    @MockBean
+     ^
+1 warning
+
+> Task :processTestResources NO-SOURCE
+> Task :testClasses
+
+> Task :test
+
+SiiErpAiApplicationTests > initializationError FAILED
+    java.lang.IllegalStateException at Assert.java:79
+
+CompanyControllerTest > shouldRegisterCompany() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanDefinitionStoreException at ConfigurationClassParser.java:613
+            Caused by: org.springframework.core.type.classreading.ClassFormatException at SimpleMetadataReader.java:59
+                Caused by: java.lang.IllegalArgumentException at ClassReader.java:200
+
+SsoIntegrationTest > shouldRegisterCompanyAndLogin() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanDefinitionStoreException at ConfigurationClassParser.java:613
+            Caused by: org.springframework.core.type.classreading.ClassFormatException at SimpleMetadataReader.java:59
+                Caused by: java.lang.IllegalArgumentException at ClassReader.java:200
+
+3 tests completed, 3 failed
+
+> Task :test FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 22s
+5 actionable tasks: 5 executed

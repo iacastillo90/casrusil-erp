@@ -1,0 +1,48 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+
+> Task :test
+
+CompanyControllerTest > shouldRegisterCompany() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanDefinitionStoreException at ConfigurationClassParser.java:613
+            Caused by: org.springframework.core.type.classreading.ClassFormatException at SimpleMetadataReader.java:59
+                Caused by: java.lang.IllegalArgumentException at ClassReader.java:200
+
+SsoIntegrationTest > shouldRegisterCompanyAndLogin() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanDefinitionStoreException at ConfigurationClassParser.java:613
+            Caused by: org.springframework.core.type.classreading.ClassFormatException at SimpleMetadataReader.java:59
+                Caused by: java.lang.IllegalArgumentException at ClassReader.java:200
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (file:/C:/Users/milig/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/10.1.33/d4d10b953164db057e4a803506e4552731e5a6a0/tomcat-embed-core-10.1.33.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2025-12-02T20:49:37.144-03:00  INFO 17340 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-02T20:49:37.149-03:00  INFO 17340 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-02T20:49:37.158-03:00  INFO 17340 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
+> Task :test
+
+3 tests completed, 2 failed
+
+> Task :test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 58s
+5 actionable tasks: 1 executed, 4 up-to-date

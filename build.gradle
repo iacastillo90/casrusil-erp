@@ -1,0 +1,104 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+springBoot {
+	mainClass = 'com.casrusil.SII_ERP_AI.SiiErpAiApplication'
+}
+
+group = 'com.casrusil'
+version = '0.0.1-SNAPSHOT'
+description = 'ERP contable con integración nativa al Servicio de Impuestos Internos (SII) y capacidades de Inteligencia Artificial (RAG/Tools) para asistencia financiera.'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j' // MySQL support for production
+	testRuntimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.apache.santuario:xmlsec:3.0.4'
+	implementation 'dev.langchain4j:langchain4j-google-ai-gemini:0.35.0'
+	implementation 'dev.langchain4j:langchain4j-spring-boot-starter:0.35.0'
+	// RAG and Embeddings support
+	implementation 'dev.langchain4j:langchain4j-embeddings-all-minilm-l6-v2:0.35.0'
+	implementation 'dev.langchain4j:langchain4j-easy-rag:0.35.0'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.testcontainers:postgresql:1.19.3'
+	testImplementation 'org.testcontainers:junit-jupiter:1.19.3'
+	implementation 'org.apache.poi:poi-ooxml:5.2.5' // Excel generation
+	implementation 'org.apache.commons:commons-csv:1.10.0' // CSV parsing
+	implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0' // Resilience
+	// Phase 22: Visualization & Distribution
+	implementation 'com.github.librepdf:openpdf:1.3.30'
+	implementation 'com.google.zxing:core:3.5.3'
+	implementation 'com.google.zxing:javase:3.5.3'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// Phase 23: AI Memory
+	implementation 'dev.langchain4j:langchain4j-pgvector:0.35.0'
+	implementation 'org.postgresql:postgresql'
+	// Phase 24: The Time Gem (Audit)
+	implementation 'org.javers:javers-spring-boot-starter-sql:7.6.1'
+	implementation 'org.javers:javers-core:7.6.1'
+	// Phase 25: The Reality Gem (DX)
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+	// Phase 27: The Space Gem (Observability)
+	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+	implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+	// Phase 28: The Power Gem (Chaos)
+	implementation 'de.codecentric:chaos-monkey-spring-boot:3.0.0'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	systemProperty 'spring.classformat.ignore', 'true'
+	jvmArgs(['--enable-preview', '-XX:+EnableDynamicAgentLoading'])
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs += "--enable-preview"
+}
+
+tasks.named('bootRun') {
+	jvmArgs(['--enable-preview'])
+	systemProperty 'spring.classformat.ignore', 'true'
+}
+
+tasks.withType(JavaExec) {
+	jvmArgs(['--enable-preview'])
+	systemProperty 'spring.classformat.ignore', 'true'
+
+	// Load .env file if it exists
+	def envFile = file('.env')
+	if (envFile.exists()) {
+		envFile.eachLine { line ->
+			line = line.trim()
+			if (line && !line.startsWith('#') && line.contains('=')) {
+				def parts = line.split('=', 2)
+				def key = parts[0].trim()
+				def value = parts[1].trim()
+				environment key, value
+			}
+		}
+		println "Loaded environment variables from .env for task ${name}"
+	}
+}
+

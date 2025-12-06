@@ -1,0 +1,14 @@
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Could not initialize class org.gradle.toolchains.foojay.DistributionsKt
+> Exception java.lang.NoSuchFieldError: Class org.gradle.jvm.toolchain.JvmVendorSpec does not have member field 'org.gradle.jvm.toolchain.JvmVendorSpec IBM_SEMERU' [in thread "Daemon worker Thread 9"]
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 8s

@@ -1,0 +1,222 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources
+> Task :classes
+> Task :resolveMainClassName
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.0)
+
+2025-12-02T21:01:15.783-03:00  INFO 14564 --- [SII-ERP-AI] [           main] c.c.SII_ERP_AI.SiiErpAiApplication       : Starting SiiErpAiApplication using Java 25.0.1 with PID 14564 (C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main started by milig in C:\Users\milig\OneDrive\Desktop\SII-ERP-AI)
+2025-12-02T21:01:15.830-03:00  INFO 14564 --- [SII-ERP-AI] [           main] c.c.SII_ERP_AI.SiiErpAiApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-12-02T21:01:28.849-03:00  INFO 14564 --- [SII-ERP-AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-02T21:01:29.558-03:00  INFO 14564 --- [SII-ERP-AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 611 ms. Found 2 JPA repository interfaces.
+2025-12-02T21:01:33.660-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2025-12-02T21:01:33.827-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-02T21:01:33.828-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.14]
+2025-12-02T21:01:34.246-03:00  INFO 14564 --- [SII-ERP-AI] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 16184 ms
+2025-12-02T21:01:45.690-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-02T21:01:45.920-03:00  INFO 14564 --- [SII-ERP-AI] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 7.1.8.Final
+2025-12-02T21:01:48.876-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-02T21:01:49.134-03:00  INFO 14564 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-02T21:01:49.909-03:00  INFO 14564 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-12-02T21:01:49.920-03:00  INFO 14564 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-02T21:01:50.029-03:00  WARN 14564 --- [SII-ERP-AI] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-02T21:01:50.122-03:00  INFO 14564 --- [SII-ERP-AI] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:testdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: TESTDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-02T21:01:55.099-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-02T21:01:55.323-03:00  WARN 14564 --- [SII-ERP-AI] [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "create table sso.companies (id uuid not null, active boolean not null, razon_social varchar(255) not null, rut varchar(255) not null, primary key (id))" via JDBC [Schema "SSO" no encontrado
+Schema "SSO" not found;]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "create table sso.companies (id uuid not null, active boolean not null, razon_social varchar(255) not null, rut varchar(255) not null, primary key (id))" via JDBC [Schema "SSO" no encontrado
+Schema "SSO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:93) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:573) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:513) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:313) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:78) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:230) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:109) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:267) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:142) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:139) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:350) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:436) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1459) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:433) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:416) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:409) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:966) ~[spring-context-7.0.1.jar:7.0.1]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:620) ~[spring-context-7.0.1.jar:7.0.1]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:765) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:454) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1374) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-4.0.0.jar:4.0.0]
+	at com.casrusil.SII_ERP_AI.SiiErpAiApplication.main(SiiErpAiApplication.java:10) ~[main/:na]
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Schema "SSO" no encontrado
+Schema "SSO" not found; SQL statement:
+create table sso.companies (id uuid not null, active boolean not null, razon_social varchar(255) not null, rut varchar(255) not null, primary key (id)) [90079-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.get(DbException.java:223) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.get(DbException.java:199) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.getSchema(Parser.java:926) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.getSchema(Parser.java:932) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseCreateTable(Parser.java:8915) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseCreate(Parser.java:6483) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parsePrepared(Parser.java:648) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:584) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:559) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.prepareCommand(Parser.java:487) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:647) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:563) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1160) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231) ~[h2-2.4.240.jar:2.4.240]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:79) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	... 37 common frames omitted
+
+2025-12-02T21:01:55.364-03:00  WARN 14564 --- [SII-ERP-AI] [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "create table sso.users (id uuid not null, active boolean not null, company_id uuid not null, email varchar(255) not null, password_hash varchar(255) not null, role enum ('ACCOUNTANT','COMPANY_ADMIN','SUPER_ADMIN','VIEWER') not null, primary key (id))" via JDBC [Schema "SSO" no encontrado
+Schema "SSO" not found;]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "create table sso.users (id uuid not null, active boolean not null, company_id uuid not null, email varchar(255) not null, password_hash varchar(255) not null, role enum ('ACCOUNTANT','COMPANY_ADMIN','SUPER_ADMIN','VIEWER') not null, primary key (id))" via JDBC [Schema "SSO" no encontrado
+Schema "SSO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:93) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:573) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:513) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:313) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:78) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:230) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:109) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:267) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:142) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:139) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:350) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:436) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1459) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:433) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:416) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:409) ~[spring-orm-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.1.jar:7.0.1]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:966) ~[spring-context-7.0.1.jar:7.0.1]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:620) ~[spring-context-7.0.1.jar:7.0.1]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:765) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:454) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1374) ~[spring-boot-4.0.0.jar:4.0.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-4.0.0.jar:4.0.0]
+	at com.casrusil.SII_ERP_AI.SiiErpAiApplication.main(SiiErpAiApplication.java:10) ~[main/:na]
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Schema "SSO" no encontrado
+Schema "SSO" not found; SQL statement:
+create table sso.users (id uuid not null, active boolean not null, company_id uuid not null, email varchar(255) not null, password_hash varchar(255) not null, role enum ('ACCOUNTANT','COMPANY_ADMIN','SUPER_ADMIN','VIEWER') not null, primary key (id)) [90079-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.get(DbException.java:223) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.get(DbException.java:199) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.getSchema(Parser.java:926) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.getSchema(Parser.java:932) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseCreateTable(Parser.java:8915) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseCreate(Parser.java:6483) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parsePrepared(Parser.java:648) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:584) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:559) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.prepareCommand(Parser.java:487) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:647) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:563) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1160) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231) ~[h2-2.4.240.jar:2.4.240]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:79) ~[hibernate-core-7.1.8.Final.jar:7.1.8.Final]
+	... 37 common frames omitted
+
+2025-12-02T21:01:55.414-03:00  INFO 14564 --- [SII-ERP-AI] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-02T21:01:55.937-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-02T21:01:57.921-03:00  WARN 14564 --- [SII-ERP-AI] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'companyController' defined in file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\CompanyController.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'com.casrusil.SII_ERP_AI.modules.sso.domain.port.in.RegisterCompanyUseCase' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2025-12-02T21:01:57.922-03:00  INFO 14564 --- [SII-ERP-AI] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-02T21:01:57.947-03:00  INFO 14564 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-02T21:01:57.978-03:00  INFO 14564 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-02T21:01:57.984-03:00  INFO 14564 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-02T21:01:58.048-03:00  INFO 14564 --- [SII-ERP-AI] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-02T21:01:58.174-03:00 ERROR 14564 --- [SII-ERP-AI] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.casrusil.SII_ERP_AI.modules.sso.infrastructure.web.CompanyController required a bean of type 'com.casrusil.SII_ERP_AI.modules.sso.domain.port.in.RegisterCompanyUseCase' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.casrusil.SII_ERP_AI.modules.sso.domain.port.in.RegisterCompanyUseCase' in your configuration.
+
+
+> Task :bootRun FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':bootRun'.
+> Process 'command 'C:\Program Files\Java\jdk-25\bin\java.exe'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 7s
+4 actionable tasks: 3 executed, 1 up-to-date

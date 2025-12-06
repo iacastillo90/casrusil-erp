@@ -1,0 +1,74 @@
+﻿> Task :clean
+
+> Task :compileJava
+
+> Task :processResources
+> Task :classes
+> Task :resolveMainClassName
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-12-04T17:46:04.297-03:00  INFO 22720 --- [SII-ERP-AI] [           main] c.c.SII_ERP_AI.SiiErpAiApplication       : Starting SiiErpAiApplication using Java 21.0.7 with PID 22720 (C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main started by milig in C:\Users\milig\OneDrive\Desktop\SII-ERP-AI)
+2025-12-04T17:46:04.308-03:00  INFO 22720 --- [SII-ERP-AI] [           main] c.c.SII_ERP_AI.SiiErpAiApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-12-04T17:46:04.519-03:00  INFO 22720 --- [SII-ERP-AI] [           main] .s.b.d.c.l.DockerComposeLifecycleManager : Using Docker Compose file C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\docker-compose.yml
+2025-12-04T17:46:04.894-03:00 ERROR 22720 --- [SII-ERP-AI] [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.boot.docker.compose.core.DockerProcessStartException: Unable to start docker process. Is docker correctly installed?
+	at org.springframework.boot.docker.compose.core.DockerCli$DockerCommands.getDockerCommand(DockerCli.java:147) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.core.DockerCli$DockerCommands.<init>(DockerCli.java:136) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.core.DockerCli.lambda$new$0(DockerCli.java:63) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1228) ~[na:na]
+	at org.springframework.boot.docker.compose.core.DockerCli.<init>(DockerCli.java:62) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.core.DockerCompose.get(DockerCompose.java:145) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeLifecycleManager.getDockerCompose(DockerComposeLifecycleManager.java:166) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeLifecycleManager.start(DockerComposeLifecycleManager.java:114) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeListener.onApplicationEvent(DockerComposeListener.java:53) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeListener.onApplicationEvent(DockerComposeListener.java:35) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:185) ~[spring-context-6.2.0.jar:6.2.0]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:178) ~[spring-context-6.2.0.jar:6.2.0]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:156) ~[spring-context-6.2.0.jar:6.2.0]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:138) ~[spring-context-6.2.0.jar:6.2.0]
+	at org.springframework.boot.context.event.EventPublishingRunListener.multicastInitialEvent(EventPublishingRunListener.java:136) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.context.event.EventPublishingRunListener.contextLoaded(EventPublishingRunListener.java:98) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplicationRunListeners.lambda$contextLoaded$4(SpringApplicationRunListeners.java:72) ~[spring-boot-3.4.0.jar:3.4.0]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[na:na]
+	at org.springframework.boot.SpringApplicationRunListeners.doWithListeners(SpringApplicationRunListeners.java:118) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplicationRunListeners.doWithListeners(SpringApplicationRunListeners.java:112) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplicationRunListeners.contextLoaded(SpringApplicationRunListeners.java:72) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:416) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:317) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.4.0.jar:3.4.0]
+	at com.casrusil.SII_ERP_AI.SiiErpAiApplication.main(SiiErpAiApplication.java:10) ~[main/:na]
+Caused by: org.springframework.boot.docker.compose.core.ProcessStartException: Unable to start command docker version --format {{.Client.Version}}
+	at org.springframework.boot.docker.compose.core.ProcessRunner.startProcess(ProcessRunner.java:116) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.core.ProcessRunner.run(ProcessRunner.java:88) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.core.ProcessRunner.run(ProcessRunner.java:75) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	at org.springframework.boot.docker.compose.core.DockerCli$DockerCommands.getDockerCommand(DockerCli.java:142) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	... 25 common frames omitted
+Caused by: java.io.IOException: Cannot run program "docker": CreateProcess error=2, El sistema no puede encontrar el archivo especificado
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170) ~[na:na]
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089) ~[na:na]
+	at org.springframework.boot.docker.compose.core.ProcessRunner.startProcess(ProcessRunner.java:106) ~[spring-boot-docker-compose-3.4.0.jar:3.4.0]
+	... 28 common frames omitted
+Caused by: java.io.IOException: CreateProcess error=2, El sistema no puede encontrar el archivo especificado
+	at java.base/java.lang.ProcessImpl.create(Native Method) ~[na:na]
+	at java.base/java.lang.ProcessImpl.<init>(ProcessImpl.java:506) ~[na:na]
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:159) ~[na:na]
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126) ~[na:na]
+	... 30 common frames omitted
+
+
+> Task :bootRun FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+5 actionable tasks: 5 executed

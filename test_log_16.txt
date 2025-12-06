@@ -1,0 +1,44 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava UP-TO-DATE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+
+> Task :test
+
+SiiErpAiApplicationTests > contextLoads() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanCreationException at AbstractBeanFactory.java:325
+            Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException at ConstructorResolver.java:804
+                Caused by: org.springframework.beans.factory.BeanCreationException at ConstructorResolver.java:657
+                    Caused by: org.springframework.beans.BeanInstantiationException at SimpleInstantiationStrategy.java:199
+                        Caused by: org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException at DataSourceProperties.java:186
+
+CompanyControllerTest > shouldRegisterCompany() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanDefinitionStoreException at ConfigurationClassParser.java:613
+            Caused by: org.springframework.core.type.classreading.ClassFormatException at SimpleMetadataReader.java:59
+                Caused by: java.lang.IllegalArgumentException at ClassReader.java:200
+
+SsoIntegrationTest > shouldRegisterCompanyAndLogin() FAILED
+    java.lang.IllegalStateException at DefaultCacheAwareContextLoaderDelegate.java:180
+        Caused by: org.springframework.beans.factory.BeanDefinitionStoreException at ConfigurationClassParser.java:613
+            Caused by: org.springframework.core.type.classreading.ClassFormatException at SimpleMetadataReader.java:59
+                Caused by: java.lang.IllegalArgumentException at ClassReader.java:200
+
+3 tests completed, 3 failed
+
+> Task :test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 29s
+4 actionable tasks: 1 executed, 3 up-to-date

@@ -1,0 +1,34 @@
+
+> Task :compileJava FAILED
+C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\src\main\java\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\UserController.java:25: error: cannot find symbol
+        CompanyId companyId = CompanyContext.currentCompanyId();
+                                            ^
+  symbol:   method currentCompanyId()
+  location: class CompanyContext
+C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\src\main\java\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\UserController.java:32: error: cannot find symbol
+        CompanyId companyId = CompanyContext.currentCompanyId();
+                                            ^
+  symbol:   method currentCompanyId()
+  location: class CompanyContext
+2 errors
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\src\main\java\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\UserController.java:25: error: cannot find symbol
+          CompanyId companyId = CompanyContext.currentCompanyId();
+                                              ^
+    symbol:   method currentCompanyId()
+    location: class CompanyContext
+  2 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 6s
+1 actionable task: 1 executed

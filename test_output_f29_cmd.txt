@@ -1,0 +1,43 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+
+> Task :test
+
+CalculateF29ToolTest > shouldHandleInvalidDateFormat() FAILED
+    org.mockito.exceptions.base.MockitoException at MockitoExtension.java:160
+        Caused by: org.mockito.exceptions.base.MockitoException at TypeCache.java:168
+            Caused by: java.lang.IllegalStateException at InlineBytecodeGenerator.java:285
+                Caused by: java.lang.IllegalArgumentException at OpenedClassReader.java:120
+
+CalculateF29ToolTest > shouldCalculateF29Successfully() FAILED
+    org.mockito.exceptions.base.MockitoException at MockitoExtension.java:160
+        Caused by: org.mockito.exceptions.base.MockitoException at TypeCache.java:168
+            Caused by: java.lang.IllegalStateException at InlineBytecodeGenerator.java:285
+                Caused by: java.lang.IllegalArgumentException at OpenedClassReader.java:120
+
+CalculateF29ToolTest > shouldHandleCalculationError() FAILED
+    org.mockito.exceptions.base.MockitoException at MockitoExtension.java:160
+        Caused by: org.mockito.exceptions.base.MockitoException at TypeCache.java:168
+            Caused by: java.lang.IllegalStateException at InlineBytecodeGenerator.java:285
+                Caused by: java.lang.IllegalArgumentException at OpenedClassReader.java:120
+
+3 tests completed, 3 failed
+
+> Task :test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 18s
+5 actionable tasks: 1 executed, 4 up-to-date

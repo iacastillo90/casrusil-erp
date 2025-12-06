@@ -1,0 +1,216 @@
+Initialized native services in: C:\Users\milig\.gradle\native
+Initialized jansi services in: C:\Users\milig\.gradle\native
+Found daemon DaemonInfo{pid=12920, address=[6d146cc7-78a2-4820-bb3b-1764dc5c43ba port:58677, addresses:[/127.0.0.1]], state=Idle, lastBusy=1764715874969, context=DefaultDaemonContext[uid=8f803c3e-92e6-4aac-88de-6c0c2ea136ff,javaHome=C:\Users\milig\.antigravity\extensions\redhat.java-1.50.0-win32-x64\jre\21.0.9-win32-x86_64,javaVersion=21,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\milig\.gradle\daemon,pid=12920,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:MaxMetaspaceSize=384m,-XX:+HeapDumpOnOutOfMemoryError,-Xms256m,-Xmx512m,-Dfile.encoding=UTF-8,-Duser.country=CL,-Duser.language=es,-Duser.variant]} however its context does not match the desired criteria.
+JVM is incompatible.
+Wanted: DaemonRequestContext{jvmCriteria=C:\Program Files\Java\jdk-21 (no JDK specified, using current Java home), daemonOpts=[-XX:MaxMetaspaceSize=384m, -XX:+HeapDumpOnOutOfMemoryError, -Xms256m, -Xmx512m, -Dfile.encoding=UTF-8, -Duser.country=CL, -Duser.language=es, -Duser.variant], applyInstrumentationAgent=true, nativeServicesMode=ENABLED, priority=NORMAL}
+Actual: DefaultDaemonContext[uid=8f803c3e-92e6-4aac-88de-6c0c2ea136ff,javaHome=C:\Users\milig\.antigravity\extensions\redhat.java-1.50.0-win32-x64\jre\21.0.9-win32-x86_64,javaVersion=21,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\milig\.gradle\daemon,pid=12920,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:MaxMetaspaceSize=384m,-XX:+HeapDumpOnOutOfMemoryError,-Xms256m,-Xmx512m,-Dfile.encoding=UTF-8,-Duser.country=CL,-Duser.language=es,-Duser.variant]
+
+  Looking for a different daemon...
+The client will now receive all logging from the daemon (pid: 11420). The daemon log file: C:\Users\milig\.gradle\daemon\9.2.1\daemon-11420.out.log
+Starting 26th build in daemon [uptime: 1 hrs 18 mins 30.893 secs, performance: 100%, GC rate: 0.00/s, heap usage: 0% of 512 MiB, non-heap usage: 20% of 384 MiB]
+Using 4 worker leases.
+Operational build model parameters: {requiresToolingModels=false, parallelProjectExecution=false, configureOnDemand=false, configurationCache=false, configurationCacheParallelStore=false, configurationCacheParallelLoad=true, isolatedProjects=false, parallelProjectConfiguration=false, intermediateModelCache=false, parallelToolingApiActions=false, invalidateCoupledProjects=false, modelAsProjectDependency=false, resilientModelBuilding=false}
+Now considering [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\settings.gradle'.
+Projects loaded. Root project using build file 'C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build.gradle'.
+Included projects: [root project 'SII-ERP-AI']
+
+> Configure project :
+Evaluating root project 'SII-ERP-AI' using build file 'C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'org.springframework.boot', version: '3.4.0']
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'apiElements' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'archives' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'bootArchives' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'compileClasspath' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'compileOnly' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'default' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'developmentOnly' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'implementation' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'mainSourceElements' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'runtimeClasspath' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'runtimeElements' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'runtimeOnly' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testCompileClasspath' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testCompileOnly' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testImplementation' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'SII-ERP-AI'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'SII-ERP-AI'
+All projects evaluated.
+Task name matched 'test'
+Selected primary task 'test' from project :
+Resolving global dependency management for project 'SII-ERP-AI'
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Tasks to be executed: [task ':compileJava', task ':processResources', task ':classes', task ':compileTestJava', task ':processTestResources', task ':testClasses', task ':test']
+Tasks that were excluded: []
+Resolve mutations for :compileJava (Thread[#1658,included builds,5,main]) started.
+:compileJava (Thread[#1659,Execution worker,5,main]) started.
+
+> Task :compileJava UP-TO-DATE
+Custom actions are attached to task ':compileJava'.
+Caching disabled for task ':compileJava' because:
+  Build cache is disabled
+Skipping task ':compileJava' as it is up-to-date.
+Resolve mutations for :processResources (Thread[#1659,Execution worker,5,main]) started.
+:processResources (Thread[#1659,Execution worker,5,main]) started.
+
+> Task :processResources UP-TO-DATE
+Caching disabled for task ':processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':processResources' as it is up-to-date.
+Resolve mutations for :classes (Thread[#1659,Execution worker,5,main]) started.
+:classes (Thread[#1659,Execution worker,5,main]) started.
+
+> Task :classes UP-TO-DATE
+Skipping task ':classes' as it has no actions.
+Resolve mutations for :compileTestJava (Thread[#1659,Execution worker,5,main]) started.
+:compileTestJava (Thread[#1659,Execution worker,5,main]) started.
+
+> Task :compileTestJava UP-TO-DATE
+Custom actions are attached to task ':compileTestJava'.
+Caching disabled for task ':compileTestJava' because:
+  Build cache is disabled
+Skipping task ':compileTestJava' as it is up-to-date.
+Resolve mutations for :processTestResources (Thread[#1659,Execution worker,5,main]) started.
+:processTestResources (Thread[#1659,Execution worker,5,main]) started.
+
+> Task :processTestResources NO-SOURCE
+Skipping task ':processTestResources' as it has no source files and no previous output files.
+Resolve mutations for :testClasses (Thread[#1659,Execution worker,5,main]) started.
+:testClasses (Thread[#1659,Execution worker,5,main]) started.
+
+> Task :testClasses UP-TO-DATE
+Skipping task ':testClasses' as it has no actions.
+Resolve mutations for :test (Thread[#1659,Execution worker,5,main]) started.
+:test (Thread[#1659,Execution worker,5,main]) started.
+Gradle Test Executor 8 started executing tests.
+
+> Task :test
+Caching disabled for task ':test' because:
+  Build cache is disabled
+Task ':test' is not up-to-date because:
+  Task has failed previously.
+Starting process 'Gradle Test Executor 8'. Working directory: C:\Users\milig\OneDrive\Desktop\SII-ERP-AI Command: C:\Program Files\Java\jdk-25\bin\java.exe -Dorg.gradle.internal.worker.tmpdir=C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\tmp\test\work --enable-preview @C:\Users\milig\.gradle\.tmp\gradle-worker-classpath4744042661073326616txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=CL -Duser.language=es -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 8'
+Successfully started process 'Gradle Test Executor 8'
+
+SiiErpAiApplicationTests STANDARD_OUT
+    19:57:59.783 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.casrusil.SII_ERP_AI.SiiErpAiApplicationTests]: SiiErpAiApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+
+SiiErpAiApplicationTests > initializationError FAILED
+    org.springframework.beans.factory.BeanDefinitionStoreException: Incompatible class format in file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\test\com\casrusil\SII_ERP_AI\SiiErpAiApplicationTests.class]: set system property 'spring.classformat.ignore' to 'true' if you mean to ignore such files during classpath scanning
+        at app//org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:504)
+        at app//org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.findCandidateComponents(ClassPathScanningCandidateComponentProvider.java:351)
+        at app//org.springframework.boot.test.context.AnnotatedClassFinder.scanPackage(AnnotatedClassFinder.java:90)
+        at app//org.springframework.boot.test.context.AnnotatedClassFinder.findFromPackage(AnnotatedClassFinder.java:82)
+        at app//org.springframework.boot.test.context.AnnotatedClassFinder.findFromClass(AnnotatedClassFinder.java:68)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.findConfigurationClass(SpringBootTestContextBootstrapper.java:245)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.getOrFindConfigurationClasses(SpringBootTestContextBootstrapper.java:233)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.processMergedContextConfiguration(SpringBootTestContextBootstrapper.java:150)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:351)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:267)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:215)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:108)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.buildTestContext(SpringBootTestContextBootstrapper.java:111)
+        at app//org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:142)
+        at app//org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:126)
+        at app//org.springframework.test.context.junit.jupiter.SpringExtension.getTestContextManager(SpringExtension.java:363)
+        at app//org.springframework.test.context.junit.jupiter.SpringExtension.beforeAll(SpringExtension.java:128)
+        at java.base@25.0.1/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+        Caused by:
+        org.springframework.core.type.classreading.ClassFormatException: ASM ClassReader failed to parse class file - probably due to a new Java class file version that is not supported yet. Consider compiling with a lower '-target' or upgrade your framework version. Affected class: file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\test\com\casrusil\SII_ERP_AI\SiiErpAiApplicationTests.class]
+            at app//org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:59)
+            at app//org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:48)
+            at app//org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:103)
+            at app//org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:131)
+            at app//org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:470)
+            ... 17 more
+
+            Caused by:
+            java.lang.IllegalArgumentException: Unsupported class file major version 69
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:200)
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:180)
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:166)
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:288)
+                at org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:56)
+                ... 21 more
+
+CompanyControllerTest STANDARD_OUT
+    19:58:00.248 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.casrusil.SII_ERP_AI.modules.sso.infrastructure.web.CompanyControllerTest]: CompanyControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+
+CompanyControllerTest > initializationError FAILED
+    org.springframework.beans.factory.BeanDefinitionStoreException: Incompatible class format in file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\test\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\CompanyControllerTest.class]: set system property 'spring.classformat.ignore' to 'true' if you mean to ignore such files during classpath scanning
+        at app//org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:504)
+        at app//org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.findCandidateComponents(ClassPathScanningCandidateComponentProvider.java:351)
+        at app//org.springframework.boot.test.context.AnnotatedClassFinder.scanPackage(AnnotatedClassFinder.java:90)
+        at app//org.springframework.boot.test.context.AnnotatedClassFinder.findFromPackage(AnnotatedClassFinder.java:82)
+        at app//org.springframework.boot.test.context.AnnotatedClassFinder.findFromClass(AnnotatedClassFinder.java:68)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.findConfigurationClass(SpringBootTestContextBootstrapper.java:245)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.getOrFindConfigurationClasses(SpringBootTestContextBootstrapper.java:233)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.processMergedContextConfiguration(SpringBootTestContextBootstrapper.java:150)
+        at app//org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper.processMergedContextConfiguration(WebMvcTestContextBootstrapper.java:36)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:351)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:267)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:215)
+        at app//org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:108)
+        at app//org.springframework.boot.test.context.SpringBootTestContextBootstrapper.buildTestContext(SpringBootTestContextBootstrapper.java:111)
+        at app//org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:142)
+        at app//org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:126)
+        at app//org.springframework.test.context.junit.jupiter.SpringExtension.getTestContextManager(SpringExtension.java:363)
+        at app//org.springframework.test.context.junit.jupiter.SpringExtension.beforeAll(SpringExtension.java:128)
+        at java.base@25.0.1/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+        Caused by:
+        org.springframework.core.type.classreading.ClassFormatException: ASM ClassReader failed to parse class file - probably due to a new Java class file version that is not supported yet. Consider compiling with a lower '-target' or upgrade your framework version. Affected class: file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\test\com\casrusil\SII_ERP_AI\modules\sso\infrastructure\web\CompanyControllerTest.class]
+            at app//org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:59)
+            at app//org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:48)
+            at app//org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:103)
+            at app//org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:131)
+            at app//org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:470)
+            ... 18 more
+
+            Caused by:
+            java.lang.IllegalArgumentException: Unsupported class file major version 69
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:200)
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:180)
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:166)
+                at org.springframework.asm.ClassReader.<init>(ClassReader.java:288)
+                at org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:56)
+                ... 22 more
+
+Gradle Test Executor 8 finished executing tests.
+
+> Task :test FAILED
+
+2 tests completed, 2 failed
+Finished generating test XML results (0.008 secs) into: C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\test-results\test
+Generating HTML test report...
+Finished generating test html results (0.022 secs) into: C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\reports\tests\test
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 10s
+4 actionable tasks: 1 executed, 3 up-to-date
+Watched directory hierarchies: [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI]

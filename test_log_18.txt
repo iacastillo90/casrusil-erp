@@ -1,0 +1,23 @@
+
+> Task :compileJava FAILED
+error: invalid source release 23 with --enable-preview
+  (preview language features are only supported for release 25)
+1 error
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  error: invalid source release 23 with --enable-preview
+    (preview language features are only supported for release 25)
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 8s
+1 actionable task: 1 executed

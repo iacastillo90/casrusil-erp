@@ -1,0 +1,101 @@
+﻿
+> Configure project :
+Loaded environment variables from .env for task bootRun
+Loaded environment variables from .env for task bootTestRun
+
+> Task :clean
+
+> Task :compileJava
+
+> Task :processResources
+> Task :classes
+> Task :resolveMainClassName
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-12-08T00:06:42.291-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.casrusil.SiiErpAiApplication         : Starting SiiErpAiApplication using Java 21.0.7 with PID 15020 (C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main started by milig in C:\Users\milig\OneDrive\Desktop\SII-ERP-AI)
+2025-12-08T00:06:42.303-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.casrusil.SiiErpAiApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-12-08T00:06:45.232-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'embeddingStore' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=embeddingConfig; factoryMethodName=embeddingStore; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/ai_assistant/infrastructure/config/EmbeddingConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=pgVectorConfig; factoryMethodName=embeddingStore; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/ai_assistant/infrastructure/config/PgVectorConfig.class]]
+2025-12-08T00:06:45.241-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Generic bean: class=com.casrusil.siierpai.modules.sso.infrastructure.security.PasswordEncoder; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main\com\casrusil\siierpai\modules\sso\infrastructure\security\PasswordEncoder.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/sso/infrastructure/config/SecurityConfig.class]]
+2025-12-08T00:06:45.255-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/sso/infrastructure/config/SecurityConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=passwordEncoderAdapter; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/sso/infrastructure/security/PasswordEncoderAdapter.class]]
+2025-12-08T00:06:45.279-03:00  INFO 15020 --- [SII-ERP-AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-08T00:06:45.831-03:00  INFO 15020 --- [SII-ERP-AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 524 ms. Found 8 JPA repository interfaces.
+2025-12-08T00:06:51.297-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-08T00:06:51.349-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-08T00:06:51.351-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.33]
+2025-12-08T00:06:51.500-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-08T00:06:51.503-03:00  INFO 15020 --- [SII-ERP-AI] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9015 ms
+2025-12-08T00:06:52.286-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-08T00:06:52.703-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@202f054f
+2025-12-08T00:06:52.706-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-08T00:06:53.853-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-08T00:06:54.057-03:00  INFO 15020 --- [SII-ERP-AI] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-12-08T00:06:54.190-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-08T00:06:55.184-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-08T00:06:55.332-03:00  WARN 15020 --- [SII-ERP-AI] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-08T00:06:55.368-03:00  INFO 15020 --- [SII-ERP-AI] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-08T00:06:58.295-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-08T00:06:58.673-03:00  INFO 15020 --- [SII-ERP-AI] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-08T00:07:13.836-03:00  INFO 15020 --- [SII-ERP-AI] [           main] ai.djl.util.Platform                     : Found matching platform from: jar:file:/C:/Users/milig/.gradle/caches/modules-2/files-2.1/ai.djl.huggingface/tokenizers/0.28.0/c66b1f8c7ef6fb541d0743362864c0751a47c4ed/tokenizers-0.28.0.jar!/native/lib/tokenizers.properties
+2025-12-08T00:07:15.887-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.s.b.sql.JaversSqlAutoConfiguration   : detected Hibernate dialect: PostgreSQLDialect
+2025-12-08T00:07:15.925-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.repository.sql.SqlRepositoryBuilder  : starting SqlRepository...
+2025-12-08T00:07:15.925-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.repository.sql.SqlRepositoryBuilder  :   dialect:                  POSTGRES
+2025-12-08T00:07:15.926-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.repository.sql.SqlRepositoryBuilder  :   schemaManagementEnabled:  true
+2025-12-08T00:07:15.926-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.repository.sql.SqlRepositoryBuilder  :   schema name:              public
+2025-12-08T00:07:16.123-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.r.sql.schema.TableNameProvider       : Commit table:           public.jv_commit
+2025-12-08T00:07:16.123-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.r.sql.schema.TableNameProvider       : CommitProperty table:   public.jv_commit_property
+2025-12-08T00:07:16.123-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.r.sql.schema.TableNameProvider       : GlobalId table:         public.jv_global_id
+2025-12-08T00:07:16.124-03:00  INFO 15020 --- [SII-ERP-AI] [           main] o.j.r.sql.schema.TableNameProvider       : Snapshot table:         public.jv_snapshot
+2025-12-08T00:07:16.461-03:00  INFO 15020 --- [SII-ERP-AI] [           main] org.javers.core.JaversBuilder            : mappingStyle: FIELD
+2025-12-08T00:07:16.473-03:00  INFO 15020 --- [SII-ERP-AI] [           main] org.javers.core.JaversBuilder            : loading GuavaAddOns ...
+? CARGANDO CONFIGURACI´┐¢N DE SEGURIDAD PERSONALIZADA ?
+? CARGANDO AUTH CONTROLLER - SI VES ESTO, ESTOY VIVO
+2025-12-08T00:07:17.955-03:00  WARN 15020 --- [SII-ERP-AI] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-08T00:07:18.855-03:00 DEBUG 15020 --- [SII-ERP-AI] [           main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-12-08T00:07:20.579-03:00 DEBUG 15020 --- [SII-ERP-AI] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 41 mappings in 'requestMappingHandlerMapping'
+2025-12-08T00:07:21.336-03:00 DEBUG 15020 --- [SII-ERP-AI] [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-08T00:07:22.004-03:00 DEBUG 15020 --- [SII-ERP-AI] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-12-08T00:07:23.094-03:00 DEBUG 15020 --- [SII-ERP-AI] [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-08T00:07:23.561-03:00 DEBUG 15020 --- [SII-ERP-AI] [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-08T00:07:25.980-03:00  WARN 15020 --- [SII-ERP-AI] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-12-08T00:07:26.025-03:00  INFO 15020 --- [SII-ERP-AI] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-08T00:07:26.029-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-08T00:07:26.100-03:00  INFO 15020 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-08T00:07:26.177-03:00  INFO 15020 --- [SII-ERP-AI] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-08T00:07:26.258-03:00 ERROR 15020 --- [SII-ERP-AI] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+
+> Task :bootRun FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+5 actionable tasks: 5 executed

@@ -1,0 +1,183 @@
+﻿
+> Configure project :
+Loaded environment variables from .env for task bootRun
+Loaded environment variables from .env for task bootTestRun
+
+> Task :clean
+
+> Task :compileJava
+./gradlew : C:\Users\milig\OneDrive\Des
+ktop\SII-ERP-AI\src\main\java\com\casru
+sil\siierpai\modules\sso\infrastructure
+\web\AuthController.java:1: error: 
+illegal character: '`'
+En línea: 1 Carácter: 1
++ ./gradlew clean compileJava 2>&1 | 
+Out-File -Encoding utf8 compile_er ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpeci 
+   fied: (C:\Users\milig\... characte  
+  r: '`':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCo 
+   mmandError
+ 
+```java
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:1: error: illegal 
+character: '`'
+```java
+ ^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:1: error: illegal 
+character: '`'
+```java
+  ^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:2: error: class, 
+interface, enum, or record expected
+package com.casrusil.siierpai.modules.s
+so.infrastructure.web;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:4: error: class, 
+interface, enum, or record expected
+import com.casrusil.siierpai.modules.ss
+o.application.service.AuthService;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:5: error: class, 
+interface, enum, or record expected
+import jakarta.validation.Valid;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:6: error: class, 
+interface, enum, or record expected
+import 
+jakarta.validation.constraints.Email;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:7: error: class, 
+interface, enum, or record expected
+import jakarta.validation.constraints.N
+otBlank;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:8: error: class, 
+interface, enum, or record expected
+import org.springframework.http.Respons
+eEntity;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:9: error: class, 
+interface, enum, or record expected
+import org.springframework.web.bind.ann
+otation.PostMapping;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:10: error: class, 
+interface, enum, or record expected
+import org.springframework.web.bind.ann
+otation.RequestBody;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:11: error: class, 
+interface, enum, or record expected
+import org.springframework.web.bind.ann
+otation.RequestMapping;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:12: error: class, 
+interface, enum, or record expected
+import org.springframework.web.bind.ann
+otation.RestController;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:14: error: class, 
+interface, enum, or record expected
+import java.util.Map;
+^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:69: error: illegal 
+character: '`'
+}```
+ ^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:69: error: illegal 
+character: '`'
+}```
+  ^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:69: error: illegal 
+character: '`'
+}```
+   ^
+C:\Users\milig\OneDrive\Desktop\SII-ERP
+-AI\src\main\java\com\casrusil\siierpai
+\modules\sso\infrastructure\web\AuthCon
+troller.java:70: error: reached end of 
+file while parsing
+
+18 errors
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an 
+exception.
+
+* What went wrong:
+Execution failed for task 
+':compileJava'.
+> Compilation failed; see the compiler 
+output below.
+  C:\Users\milig\OneDrive\Desktop\SII-E
+RP-AI\src\main\java\com\casrusil\siierp
+ai\modules\sso\infrastructure\web\AuthC
+ontroller.java:1: error: illegal 
+character: '`'
+  ```java
+  ^
+  18 errors
+
+* Try:
+> Check your code and dependencies to 
+fix the compilation error(s)
+> Run with --scan to generate a Build 
+Scan (powered by Develocity).
+
+BUILD FAILED in 11s
+2 actionable tasks: 2 executed

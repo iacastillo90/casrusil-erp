@@ -1,0 +1,83 @@
+﻿
+> Configure project :
+Loaded environment variables from .env for task bootRun
+Loaded environment variables from .env for task bootTestRun
+
+> Task :clean
+
+> Task :compileJava
+
+> Task :processResources
+> Task :classes
+> Task :resolveMainClassName
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-12-07T23:57:46.000-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.casrusil.SiiErpAiApplication         : Starting SiiErpAiApplication using Java 21.0.7 with PID 24476 (C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main started by milig in C:\Users\milig\OneDrive\Desktop\SII-ERP-AI)
+2025-12-07T23:57:46.013-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.casrusil.SiiErpAiApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-12-07T23:57:49.190-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'embeddingStore' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=embeddingConfig; factoryMethodName=embeddingStore; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/ai_assistant/infrastructure/config/EmbeddingConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=pgVectorConfig; factoryMethodName=embeddingStore; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/ai_assistant/infrastructure/config/PgVectorConfig.class]]
+2025-12-07T23:57:49.198-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Generic bean: class=com.casrusil.siierpai.modules.sso.infrastructure.security.PasswordEncoder; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main\com\casrusil\siierpai\modules\sso\infrastructure\security\PasswordEncoder.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/sso/infrastructure/config/SecurityConfig.class]]
+2025-12-07T23:57:49.212-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/sso/infrastructure/config/SecurityConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=passwordEncoderAdapter; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/casrusil/siierpai/modules/sso/infrastructure/security/PasswordEncoderAdapter.class]]
+2025-12-07T23:57:49.233-03:00  INFO 24476 --- [SII-ERP-AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-07T23:57:49.780-03:00  INFO 24476 --- [SII-ERP-AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 520 ms. Found 8 JPA repository interfaces.
+2025-12-07T23:57:55.460-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-07T23:57:55.509-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-07T23:57:55.511-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.33]
+2025-12-07T23:57:55.647-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-07T23:57:55.650-03:00  INFO 24476 --- [SII-ERP-AI] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9414 ms
+2025-12-07T23:57:56.278-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-07T23:57:56.718-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7ab2ba47
+2025-12-07T23:57:56.726-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-07T23:57:57.558-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-07T23:57:57.788-03:00  INFO 24476 --- [SII-ERP-AI] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-12-07T23:57:57.911-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-07T23:57:59.059-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-07T23:57:59.247-03:00  WARN 24476 --- [SII-ERP-AI] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-07T23:57:59.292-03:00  INFO 24476 --- [SII-ERP-AI] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-07T23:58:04.111-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-07T23:58:04.469-03:00  INFO 24476 --- [SII-ERP-AI] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07T23:58:18.347-03:00  INFO 24476 --- [SII-ERP-AI] [           main] ai.djl.util.Platform                     : Found matching platform from: jar:file:/C:/Users/milig/.gradle/caches/modules-2/files-2.1/ai.djl.huggingface/tokenizers/0.28.0/c66b1f8c7ef6fb541d0743362864c0751a47c4ed/tokenizers-0.28.0.jar!/native/lib/tokenizers.properties
+2025-12-07T23:58:19.931-03:00  WARN 24476 --- [SII-ERP-AI] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dteSenderService' defined in file [C:\Users\milig\OneDrive\Desktop\SII-ERP-AI\build\classes\java\main\com\casrusil\siierpai\modules\integration_sii\domain\service\DteSenderService.class]: Unsatisfied dependency expressed through constructor parameter 3: No qualifying bean of type 'com.casrusil.siierpai.modules.integration_sii.domain.port.out.CafRepository' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2025-12-07T23:58:19.936-03:00  INFO 24476 --- [SII-ERP-AI] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07T23:58:19.942-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-07T23:58:19.996-03:00  INFO 24476 --- [SII-ERP-AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-07T23:58:20.003-03:00  INFO 24476 --- [SII-ERP-AI] [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-07T23:58:20.051-03:00  INFO 24476 --- [SII-ERP-AI] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-07T23:58:20.474-03:00 ERROR 24476 --- [SII-ERP-AI] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 3 of constructor in com.casrusil.siierpai.modules.integration_sii.domain.service.DteSenderService required a bean of type 'com.casrusil.siierpai.modules.integration_sii.domain.port.out.CafRepository' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.casrusil.siierpai.modules.integration_sii.domain.port.out.CafRepository' in your configuration.
+
+
+> Task :bootRun FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+5 actionable tasks: 5 executed

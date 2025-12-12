@@ -5,7 +5,7 @@ plugins {
 }
 
 springBoot {
-	mainClass = 'com.casrusil.SII_ERP_AI.SiiErpAiApplication'
+	mainClass = 'com.casrusil.SiiErpAiApplication'
 }
 
 group = 'com.casrusil'
@@ -14,7 +14,7 @@ description = 'ERP contable con integración nativa al Servicio de Impuestos Int
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(25)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -52,6 +53,7 @@ dependencies {
 	implementation 'com.google.zxing:core:3.5.3'
 	implementation 'com.google.zxing:javase:3.5.3'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// Phase 23: AI Memory
 	implementation 'dev.langchain4j:langchain4j-pgvector:0.35.0'
 	implementation 'org.postgresql:postgresql'
@@ -65,6 +67,8 @@ dependencies {
 	implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
 	// Phase 28: The Power Gem (Chaos)
 	implementation 'de.codecentric:chaos-monkey-spring-boot:3.0.0'
+    // Lombok
+    implementation("org.projectlombok:lombok:1.18.42")
 }
 
 tasks.named('test') {

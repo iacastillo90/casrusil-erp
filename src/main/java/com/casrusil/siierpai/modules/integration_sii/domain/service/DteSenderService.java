@@ -1,0 +1,149 @@
+package com.casrusil.siierpai.modules.integration_sii.domain.service;
+
+import com.casrusil.siierpai.modules.integration_sii.domain.model.SiiCertificate;
+import com.casrusil.siierpai.modules.integration_sii.domain.model.SiiToken;
+import com.casrusil.siierpai.modules.integration_sii.domain.port.out.SiiTokenRepository;
+import com.casrusil.siierpai.modules.integration_sii.infrastructure.crypto.Pkcs12Handler;
+import com.casrusil.siierpai.modules.integration_sii.infrastructure.crypto.XmlDsigSigner;
+import com.casrusil.siierpai.modules.invoicing.domain.model.Invoice;
+import com.casrusil.siierpai.modules.invoicing.domain.model.InvoiceLine;
+import com.casrusil.siierpai.shared.domain.valueobject.CompanyId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Service for sending DTEs (Electronic Tax Documents) to SII.
+ * Handles XML generation, signing, and SOAP transmission.
+ */
+@Service
+public class DteSenderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DteSenderService.class);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private final XmlDsigSigner xmlDsigSigner;
+    private final SiiTokenRepository tokenRepository;
+    private final Pkcs12Handler pkcs12Handler;
+    private final com.casrusil.siierpai.modules.integration_sii.domain.port.out.CafRepository cafRepository;
+    private final com.casrusil.siierpai.modules.integration_sii.infrastructure.crypto.TedGenerator tedGenerator;
+    private final com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.DteXmlBuilder dteXmlBuilder;
+    private final com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.EnvioDteBuilder envioDteBuilder;
+    private final com.casrusil.siierpai.modules.integration_sii.infrastructure.adapter.out.rest.SiiUploadClient siiUploadClient;
+
+    @Value("${sii.certificate.path:}")
+    private String defaultCertPath;
+
+    @Value("${sii.certificate.password:}")
+    private String defaultCertPassword;
+
+    public DteSenderService(
+            XmlDsigSigner xmlDsigSigner,
+            SiiTokenRepository tokenRepository,
+            Pkcs12Handler pkcs12Handler,
+            com.casrusil.siierpai.modules.integration_sii.domain.port.out.CafRepository cafRepository,
+            com.casrusil.siierpai.modules.integration_sii.infrastructure.crypto.TedGenerator tedGenerator,
+            com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.DteXmlBuilder dteXmlBuilder,
+            com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.EnvioDteBuilder envioDteBuilder,
+            com.casrusil.siierpai.modules.integration_sii.infrastructure.adapter.out.rest.SiiUploadClient siiUploadClient) {
+        this.xmlDsigSigner = xmlDsigSigner;
+        this.tokenRepository = tokenRepository;
+        this.pkcs12Handler = pkcs12Handler;
+        this.cafRepository = cafRepository;
+        this.tedGenerator = tedGenerator;
+        this.dteXmlBuilder = dteXmlBuilder;
+        this.envioDteBuilder = envioDteBuilder;
+        this.siiUploadClient = siiUploadClient;
+    }
+
+    /**
+     * Send an invoice to SII.
+     * 
+     * @param invoice   The invoice to send
+     * @param companyId The company ID
+     * @return true if sent successfully, false otherwise
+     */
+    public boolean sendInvoice(Invoice invoice, CompanyId companyId) {
+        logger.info("Sending Invoice #{} to SII for company {}", invoice.getFolio(), companyId);
+
+        try {
+            // 1. Get CAF for this DTE type and Folio
+            String tipoDteStr = String.valueOf(invoice.getType().getCode());
+            com.casrusil.siierpai.modules.integration_sii.domain.model.Caf caf = cafRepository
+                    .findActiveForFolio(companyId, tipoDteStr, invoice.getFolio())
+                    .orElseThrow(() -> new IllegalStateException(
+                            "No active CAF found for DTE " + tipoDteStr + " Folio " + invoice.getFolio()));
+
+            // 2. Generate TED
+            String tedXml = tedGenerator.generateTedXml(invoice, caf);
+
+            // 3. Build DTE XML (Injecting TED)
+            String dteXml = dteXmlBuilder.buildDte(invoice, tedXml);
+
+            // 4. Sign DTE (Individual Signature)
+            SiiCertificate certificate = loadCertificateForCompany(companyId);
+            String dteId = "DTE_" + invoice.getFolio(); // Must match ID in DteXmlBuilder
+            String signedDteXml = xmlDsigSigner.signXml(dteXml, dteId, certificate);
+
+            // 5. Wrap in EnvioDTE
+            // Extract RUTs from invoice (real data from SII)
+            String rutEmisor = invoice.getIssuerRut(); // RUT del emisor (quien emite la factura)
+            String rutEmpresa = invoice.getIssuerRut(); // RUT de la empresa (usualmente el mismo)
+            String envioXml = envioDteBuilder.wrap(signedDteXml, companyId, rutEmisor, rutEmpresa);
+
+            // 6. Sign EnvioDTE (SetDoc Signature)
+            String signedEnvioXml = xmlDsigSigner.signXml(envioXml, "SetDoc", certificate);
+
+            // 7. Get SII Token
+            SiiToken token = tokenRepository.findByCompanyId(companyId)
+                    .orElseThrow(() -> new IllegalStateException(
+                            "No SII token found for company " + companyId + ". Please authenticate first."));
+
+            if (!token.isValid()) {
+                throw new IllegalStateException(
+                        "SII token expired for company " + companyId + ". Token will be refreshed automatically.");
+            }
+
+            // 8. Upload to SII
+            String trackId = siiUploadClient.uploadEnvioDte(token.token(), signedEnvioXml, rutEmisor, rutEmpresa);
+
+            logger.info("Invoice #{} sent successfully. Track ID: {}", invoice.getFolio(), trackId);
+            return true;
+
+        } catch (Exception e) {
+            logger.error("Failed to send invoice #{} to SII: {}", invoice.getFolio(), e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Load SII certificate for a company.
+     * 
+     * CURRENT: Uses default certificate from application.properties
+     * (MVP/Development)
+     * PRODUCTION: Should load company-specific certificate from database table:
+     * - Create `sii_certificates` table with columns: company_id, cert_data,
+     * password_encrypted
+     * - Implement CertificateRepository to fetch by companyId
+     * - Decrypt password using application secret key
+     * 
+     * @param companyId The company ID
+     * @return SiiCertificate loaded from configured source
+     * @throws IllegalStateException if no certificate is configured
+     */
+    private SiiCertificate loadCertificateForCompany(CompanyId companyId) {
+        // FIXME: For production multi-tenancy, load company-specific certificate from
+        // database
+        // Each company should have their own SII certificate stored securely
+        if (defaultCertPath == null || defaultCertPath.isEmpty()) {
+            throw new IllegalStateException(
+                    "No SII certificate configured. Set sii.certificate.path in application.properties");
+        }
+
+        logger.debug("Loading default SII certificate for company: {}", companyId);
+        return pkcs12Handler.loadCertificate(defaultCertPath, defaultCertPassword);
+    }
+}

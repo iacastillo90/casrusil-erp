@@ -1,0 +1,32 @@
+﻿
+> Configure project :
+Loaded environment variables from .env for task bootRun
+Loaded environment variables from .env for task bootTestRun
+
+> Task :clean
+
+> Task :compileJava
+./gradlew : Note: Some input files use 
+or override a deprecated API.
+En línea: 1 Carácter: 1
++ ./gradlew clean compileJava 2>&1 | 
+Out-File -Encoding utf8 compile_er ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpeci 
+   fied: (Note: Some inpu...deprecate  
+  d API.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCo 
+   mmandError
+ 
+Note: Recompile with 
+-Xlint:deprecation for details.
+Note: Some input files use preview 
+features of Java SE 21.
+Note: Recompile with -Xlint:preview 
+for details.
+
+[Incubating] Problems report is available at: file:///C:/Users/milig/OneDrive/Desktop/SII-ERP-AI/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 29s
+2 actionable tasks: 2 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.2.1/userguide/configuration_cache_enabling.html

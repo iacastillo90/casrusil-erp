@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class DteXmlParser {
@@ -40,6 +41,11 @@ public class DteXmlParser {
             long folio = Long.parseLong(getElementValue(idDoc, "Folio"));
             String fechaEmisionStr = getElementValue(idDoc, "FchEmis");
             LocalDate fechaEmision = LocalDate.parse(fechaEmisionStr);
+
+            String fechaVencStr = getElementValue(idDoc, "FchVenc");
+            LocalDate fechaVenc = (fechaVencStr != null && !fechaVencStr.isEmpty())
+                    ? LocalDate.parse(fechaVencStr)
+                    : fechaEmision;
 
             String rutEmisor = getElementValue(emisor, "RUTEmisor");
             String rutReceptor = getElementValue(receptor, "RUTRecep");
@@ -71,17 +77,58 @@ public class DteXmlParser {
                 lines.add(new InvoiceLine(nroLinDet, fullName.trim(), null, quantity, price, amount, unmdItem));
             }
 
-            return Invoice.create(
+            // Manually creating Invoice to set DueDate properly as factory might not expose
+            // it yet or defaults it.
+            // Using the full constructor logic by adapting a factory or creating a new
+            // factory method.
+            // Since I updated Invoice.create to default dueDate=date, I need to use a
+            // cleaner way.
+            // I'll call a new private helper or just use the constructor directly if
+            // accessible,
+            // BUT constructors are public.
+            // However, to be clean, I should add a factory method that takes dueDate.
+            // Or I can use the existing full factory if I updated it? I updated
+            // getters/fields but factories:
+            // I updated factories to pass 'date' as 'dueDate'.
+            // I will update the call here to use the constructor directly or the full
+            // create.
+            // But Invoice.create full version doesn't take dueDate in my last edit... wait.
+            // My last edit to Invoice.java:
+            // StartLine:72, TargetContent did NOT include dueDate in factories.
+            // I updated the constructor to take dueDate.
+            // I updated factories to PASS 'date' as 'dueDate' to the constructor.
+            // So if I want to set a distinct dueDate, I need a factory that accepts it.
+            // I'll assume I can use the constructor directly here since I'm in
+            // infrastructure.
+
+            return new Invoice(
+                    UUID.randomUUID(),
                     companyId,
                     InvoiceType.fromCode(tipoDte),
                     folio,
                     rutEmisor,
                     rutReceptor,
+                    null, // businessName
                     fechaEmision,
+                    fechaVenc, // dueDate
                     montoNeto,
                     montoIva,
                     montoTotal,
-                    lines);
+                    BigDecimal.ZERO, // fixedAsset
+                    BigDecimal.ZERO, // commonUse
+                    Invoice.ORIGIN_SII,
+                    com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType.SALE, // Defaulting to SALE?
+                                                                                               // Parsing logic should
+                                                                                               // determine type.
+                    // Actually DteXmlParser should know if it's Purchase or Sale based on Company
+                    // context?
+                    // Usually DTE XML is just the doc. Context determines if it's In or Out.
+                    // But DteXmlParser returns an Invoice object.
+                    // Existing logic relied on Invoice.create defaulting to TransactionType.SALE.
+                    // I will preserve that behavior.
+                    com.casrusil.siierpai.modules.invoicing.domain.model.PaymentStatus.PENDING,
+                    lines,
+                    "CLP");
 
         } catch (Exception e) {
             throw new RuntimeException("Error parsing DTE XML", e);

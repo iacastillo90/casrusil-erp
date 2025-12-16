@@ -73,7 +73,7 @@ public class AuthService {
         eventPublisher.publish(new CompanyCreatedEvent(company));
 
         String passwordHash = passwordEncoder.encode(adminPassword);
-        User adminUser = User.create(adminEmail, passwordHash, UserRole.ADMIN, company.getId());
+        User adminUser = User.create(adminEmail, "Administrador", passwordHash, UserRole.ADMIN, company.getId());
         userRepository.save(adminUser);
 
         logger.info("Empresa y usuario registrados exitosamente. ID Usuario: {}", adminUser.getId().getValue());

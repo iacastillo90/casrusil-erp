@@ -18,11 +18,14 @@ import java.util.UUID;
  */
 @Repository
 public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, UUID> {
-    List<InvoiceEntity> findAllByCompanyId(UUID companyId);
+        List<InvoiceEntity> findAllByCompanyId(UUID companyId);
 
-    boolean existsByCompanyIdAndTypeCodeAndFolioAndIssuerRut(UUID companyId, Integer typeCode, Long folio,
-            String issuerRut);
+        boolean existsByCompanyIdAndTypeCodeAndFolioAndIssuerRut(UUID companyId, Integer typeCode, Long folio,
+                        String issuerRut);
 
-    java.util.Optional<InvoiceEntity> findByCompanyIdAndTypeCodeAndFolioAndIssuerRut(UUID companyId, Integer typeCode,
-            Long folio, String issuerRut);
+        java.util.Optional<InvoiceEntity> findByCompanyIdAndTypeCodeAndFolioAndIssuerRut(UUID companyId,
+                        Integer typeCode,
+                        Long folio, String issuerRut);
+
+        void deleteByCompanyIdAndDateBetween(UUID companyId, java.time.LocalDate start, java.time.LocalDate end);
 }

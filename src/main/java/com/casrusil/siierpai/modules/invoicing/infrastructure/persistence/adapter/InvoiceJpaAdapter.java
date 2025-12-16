@@ -63,6 +63,11 @@ public class InvoiceJpaAdapter implements InvoiceRepository {
                 issuerRut);
     }
 
+    @Override
+    public void deleteInPeriod(CompanyId companyId, java.time.LocalDate start, java.time.LocalDate end) {
+        invoiceJpaRepository.deleteByCompanyIdAndDateBetween(companyId.value(), start, end);
+    }
+
     private InvoiceEntity toEntity(Invoice invoice) {
         InvoiceEntity entity = new InvoiceEntity(
                 invoice.getId(),
@@ -73,13 +78,15 @@ public class InvoiceJpaAdapter implements InvoiceRepository {
                 invoice.getReceiverRut(),
                 invoice.getBusinessName(),
                 invoice.getDate(),
+                invoice.getDueDate(),
                 invoice.getNetAmount(),
                 invoice.getTaxAmount(),
                 invoice.getTotalAmount(),
                 invoice.getFixedAssetAmount(),
                 invoice.getCommonUseVatAmount(),
                 invoice.getOrigin(),
-                invoice.getTransactionType());
+                invoice.getTransactionType(),
+                invoice.getStatus());
 
         if (invoice.getItems() != null) {
             for (InvoiceLine line : invoice.getItems()) {
@@ -121,6 +128,7 @@ public class InvoiceJpaAdapter implements InvoiceRepository {
                 entity.getReceiverRut(),
                 entity.getBusinessName(),
                 entity.getDate(),
+                entity.getDueDate() != null ? entity.getDueDate() : entity.getDate(), // Fallback for legacy data
                 entity.getNetAmount(),
                 entity.getTaxAmount(),
                 entity.getTotalAmount(),
@@ -128,6 +136,9 @@ public class InvoiceJpaAdapter implements InvoiceRepository {
                 entity.getCommonUseVatAmount(),
                 entity.getOrigin(),
                 entity.getTransactionType(),
-                items);
+                entity.getStatus() != null ? entity.getStatus()
+                        : com.casrusil.siierpai.modules.invoicing.domain.model.PaymentStatus.PENDING, // Fallback
+                items,
+                "CLP");
     }
 }

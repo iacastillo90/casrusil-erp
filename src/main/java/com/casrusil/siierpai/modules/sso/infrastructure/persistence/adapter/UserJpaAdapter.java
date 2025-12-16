@@ -8,6 +8,7 @@ import com.casrusil.siierpai.shared.domain.valueobject.CompanyId;
 import com.casrusil.siierpai.shared.domain.valueobject.UserId;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -44,25 +45,46 @@ public class UserJpaAdapter implements UserRepository {
         return jpaRepository.findByEmail(email).map(this::toDomain);
     }
 
+    @Override
+    public java.util.List<User> findAllByCompanyId(CompanyId companyId) {
+        // Assuming userJpaRepository has or can derive this query.
+        // We might need to add findAllByCompanyId to JpaRepository too if not present,
+        // or loop if relying on existing methods?
+        // Actually JpaRepository usually needs the method defined if it's not standard.
+        // But let's check UserJpaRepository first. If missing, I'll add it there too.
+        // For now I'll assume I can add the call here and then update the specific
+        // repository interface.
+        // Wait, UserEntity likely has companyId as UUID.
+        return jpaRepository.findAll().stream()
+                .filter(u -> u.getCompanyId().equals(companyId.getValue())) // Inefficient but works for MVP without
+                                                                            // modifying JpaRepository file yet
+                .map(this::toDomain)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
     private UserEntity toEntity(User user) {
         return new UserEntity(
                 user.getId().getValue(),
                 user.getEmail(),
+                user.getFullName(),
                 user.getPasswordHash(),
                 user.getRole(),
                 user.getCompanyId().getValue(),
                 user.isActive(),
-                user.getCreatedAt());
+                user.getCreatedAt(),
+                user.getPreferences());
     }
 
     private User toDomain(UserEntity entity) {
         return new User(
                 new UserId(entity.getId()),
                 entity.getEmail(),
+                entity.getFullName(),
                 entity.getPasswordHash(),
                 entity.getRole(),
                 new CompanyId(entity.getCompanyId()),
                 entity.isActive(),
-                entity.getCreatedAt());
+                entity.getCreatedAt(),
+                entity.getPreferences());
     }
 }

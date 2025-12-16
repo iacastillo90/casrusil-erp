@@ -31,34 +31,40 @@ package com.casrusil.siierpai.modules.invoicing.domain.model;
  */
 public enum InvoiceType {
     /** Factura Electrónica (33) */
-    FACTURA_ELECTRONICA(33),
+    FACTURA_ELECTRONICA(33, "Factura Electrónica"),
     /** Factura No Afecta o Exenta Electrónica (34) */
-    FACTURA_NO_AFECTA_O_EXENTA_ELECTRONICA(34),
+    FACTURA_NO_AFECTA_O_EXENTA_ELECTRONICA(34, "Factura Exenta"),
     /** Liquidación Factura Electrónica (43) */
-    LIQUIDACION_FACTURA_ELECTRONICA(43),
+    LIQUIDACION_FACTURA_ELECTRONICA(43, "Liquidación Factura"),
     /** Factura de Compra Electrónica (46) */
-    FACTURA_COMPRA_ELECTRONICA(46),
+    FACTURA_COMPRA_ELECTRONICA(46, "Factura de Compra"),
     /** Guía de Despacho Electrónica (52) */
-    GUIA_DESPACHO_ELECTRONICA(52),
+    GUIA_DESPACHO_ELECTRONICA(52, "Guía de Despacho"),
     /** Nota de Débito Electrónica (56) */
-    NOTA_DEBITO_ELECTRONICA(56),
+    NOTA_DEBITO_ELECTRONICA(56, "Nota de Débito"),
     /** Nota de Crédito Electrónica (61) */
-    NOTA_CREDITO_ELECTRONICA(61),
+    NOTA_CREDITO_ELECTRONICA(61, "Nota de Crédito"),
     /** Factura de Exportación Electrónica (110) */
-    FACTURA_EXPORTACION_ELECTRONICA(110),
+    FACTURA_EXPORTACION_ELECTRONICA(110, "Factura Exportación"),
     /** Nota de Débito de Exportación Electrónica (111) */
-    NOTA_DEBITO_EXPORTACION_ELECTRONICA(111),
+    NOTA_DEBITO_EXPORTACION_ELECTRONICA(111, "Nota Débito Exp."),
     /** Nota de Crédito de Exportación Electrónica (112) */
-    NOTA_CREDITO_EXPORTACION_ELECTRONICA(112);
+    NOTA_CREDITO_EXPORTACION_ELECTRONICA(112, "Nota Crédito Exp.");
 
     private final int code;
+    private final String description;
 
-    InvoiceType(int code) {
+    InvoiceType(int code, String description) {
         this.code = code;
+        this.description = description;
     }
 
     public int getCode() {
         return code;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     /**

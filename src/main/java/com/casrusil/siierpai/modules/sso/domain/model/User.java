@@ -4,6 +4,8 @@ import com.casrusil.siierpai.shared.domain.valueobject.CompanyId;
 import com.casrusil.siierpai.shared.domain.valueobject.UserId;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Entidad User del agregado Company en el contexto de SSO.
@@ -43,21 +45,26 @@ import java.time.Instant;
 public class User {
     private final UserId id;
     private String email;
+    private String fullName;
     private String passwordHash;
     private UserRole role;
     private final CompanyId companyId;
     private boolean isActive;
     private final Instant createdAt;
+    private Map<String, String> preferences;
 
-    public User(UserId id, String email, String passwordHash, UserRole role, CompanyId companyId, boolean isActive,
-            Instant createdAt) {
+    public User(UserId id, String email, String fullName, String passwordHash, UserRole role, CompanyId companyId,
+            boolean isActive,
+            Instant createdAt, Map<String, String> preferences) {
         this.id = id;
         this.email = email;
+        this.fullName = fullName;
         this.passwordHash = passwordHash;
         this.role = role;
         this.companyId = companyId;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.preferences = preferences != null ? preferences : new HashMap<>();
     }
 
     /**
@@ -69,8 +76,27 @@ public class User {
      * @param companyId    ID de la empresa a la que pertenece
      * @return Nueva instancia de User
      */
-    public static User create(String email, String passwordHash, UserRole role, CompanyId companyId) {
-        return new User(UserId.generate(), email, passwordHash, role, companyId, true, Instant.now());
+    public static User create(String email, String fullName, String passwordHash, UserRole role, CompanyId companyId) {
+        return new User(UserId.generate(), email, fullName, passwordHash, role, companyId, true, Instant.now(),
+                new HashMap<>());
+    }
+
+    // ... existing methods ...
+
+    public Map<String, String> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Map<String, String> preferences) {
+        this.preferences = preferences;
+    }
+
+    public void setPreference(String key, String value) {
+        this.preferences.put(key, value);
+    }
+
+    public String getPreference(String key) {
+        return this.preferences.get(key);
     }
 
     /**
@@ -111,6 +137,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPasswordHash() {

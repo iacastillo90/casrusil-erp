@@ -45,14 +45,25 @@ public class Company {
     private String email;
     private boolean isActive;
     private final Instant createdAt;
+    private String commercialAddress;
+    private String website;
+    private String phoneNumber;
+    private String logoUrl;
+    private boolean isProfileComplete;
 
-    public Company(CompanyId id, String rut, String razonSocial, String email, boolean isActive, Instant createdAt) {
+    public Company(CompanyId id, String rut, String razonSocial, String email, boolean isActive, Instant createdAt,
+            String commercialAddress, String website, String phoneNumber, String logoUrl, boolean isProfileComplete) {
         this.id = id;
         this.rut = rut;
         this.razonSocial = razonSocial;
         this.email = email;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.commercialAddress = commercialAddress;
+        this.website = website;
+        this.phoneNumber = phoneNumber;
+        this.logoUrl = logoUrl;
+        this.isProfileComplete = isProfileComplete;
     }
 
     /**
@@ -64,7 +75,8 @@ public class Company {
      * @return Nueva instancia de Company
      */
     public static Company create(String rut, String razonSocial, String email) {
-        return new Company(CompanyId.generate(), rut, razonSocial, email, true, Instant.now());
+        return new Company(CompanyId.generate(), rut, razonSocial, email, true, Instant.now(),
+                null, null, null, null, false);
     }
 
     /**
@@ -90,13 +102,24 @@ public class Company {
 
     /**
      * Actualiza el perfil de la empresa.
-     * 
-     * @param razonSocial Nueva razón social
-     * @param email       Nuevo correo electrónico
      */
-    public void updateProfile(String razonSocial, String email) {
+    public void updateProfile(String razonSocial, String email, String commercialAddress, String website,
+            String phoneNumber, String logoUrl) {
         this.razonSocial = razonSocial;
         this.email = email;
+        this.commercialAddress = commercialAddress;
+        this.website = website;
+        this.phoneNumber = phoneNumber;
+        if (logoUrl != null) {
+            this.logoUrl = logoUrl;
+        }
+        checkProfileCompletion();
+    }
+
+    private void checkProfileCompletion() {
+        // Consideramos completo si tiene dirección y teléfono, además de los básicos
+        this.isProfileComplete = (commercialAddress != null && !commercialAddress.isBlank()) &&
+                (phoneNumber != null && !phoneNumber.isBlank());
     }
 
     public CompanyId getId() {
@@ -121,5 +144,25 @@ public class Company {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public String getCommercialAddress() {
+        return commercialAddress;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public boolean isProfileComplete() {
+        return isProfileComplete;
     }
 }

@@ -65,6 +65,13 @@ public class InvoiceEntity {
     @Enumerated(EnumType.STRING)
     private com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType transactionType;
 
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private com.casrusil.siierpai.modules.invoicing.domain.model.PaymentStatus status;
+
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
     @Column(name = "business_name")
     private String businessName;
 
@@ -81,9 +88,11 @@ public class InvoiceEntity {
     }
 
     public InvoiceEntity(UUID id, UUID companyId, Integer typeCode, Long folio, String issuerRut, String receiverRut,
-            String businessName, LocalDate date, BigDecimal netAmount, BigDecimal taxAmount, BigDecimal totalAmount,
+            String businessName, LocalDate date, LocalDate dueDate, BigDecimal netAmount, BigDecimal taxAmount,
+            BigDecimal totalAmount,
             BigDecimal fixedAssetAmount, BigDecimal commonUseVatAmount, String origin,
-            com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType transactionType) {
+            com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType transactionType,
+            com.casrusil.siierpai.modules.invoicing.domain.model.PaymentStatus status) {
         this.id = id;
         this.companyId = companyId;
         this.typeCode = typeCode;
@@ -92,6 +101,7 @@ public class InvoiceEntity {
         this.receiverRut = receiverRut;
         this.businessName = businessName;
         this.date = date;
+        this.dueDate = dueDate;
         this.netAmount = netAmount;
         this.taxAmount = taxAmount;
         this.totalAmount = totalAmount;
@@ -99,6 +109,7 @@ public class InvoiceEntity {
         this.commonUseVatAmount = commonUseVatAmount;
         this.origin = origin;
         this.transactionType = transactionType;
+        this.status = status;
     }
 
     public void addItem(InvoiceItemEntity item) {
@@ -198,5 +209,21 @@ public class InvoiceEntity {
 
     public void setItems(List<InvoiceItemEntity> items) {
         this.items = items;
+    }
+
+    public com.casrusil.siierpai.modules.invoicing.domain.model.PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(com.casrusil.siierpai.modules.invoicing.domain.model.PaymentStatus status) {
+        this.status = status;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 }

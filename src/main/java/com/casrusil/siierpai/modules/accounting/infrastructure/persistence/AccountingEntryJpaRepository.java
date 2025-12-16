@@ -35,4 +35,7 @@ public interface AccountingEntryJpaRepository extends JpaRepository<AccountingEn
             @Param("accountCode") String accountCode,
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate);
+
+    void deleteByCompanyIdAndReferenceTypeAndOccurredOnBetween(UUID companyId, String referenceType, Instant startDate,
+            Instant endDate);
 }

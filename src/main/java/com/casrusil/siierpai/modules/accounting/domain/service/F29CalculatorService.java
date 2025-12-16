@@ -3,7 +3,6 @@ package com.casrusil.siierpai.modules.accounting.domain.service;
 import com.casrusil.siierpai.modules.accounting.domain.model.AccountingEntry;
 import com.casrusil.siierpai.modules.accounting.domain.model.AccountingEntryLine;
 import com.casrusil.siierpai.modules.accounting.domain.model.F29Report;
-import com.casrusil.siierpai.modules.accounting.domain.model.F29Report;
 import com.casrusil.siierpai.modules.accounting.domain.port.out.AccountingEntryRepository;
 import com.casrusil.siierpai.modules.fees.domain.model.FeeReceipt;
 import com.casrusil.siierpai.modules.fees.domain.port.out.FeeReceiptRepository;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class F29CalculatorService {
     private static final String IVA_CREDITO_FISCAL = "110801"; // VAT paid on purchases
     private static final String VENTAS_NACIONALES = "410101"; // Taxable sales
     private static final String VENTAS_EXENTAS = "410102"; // Exempt sales
-    private static final String COSTO_VENTAS = "5101"; // Cost of sales (purchases proxy)
+    private static final String COSTO_VENTAS = "510101"; // Cost of sales (matches Listener)
 
     private final AccountingEntryRepository accountingEntryRepository;
     private final FeeReceiptRepository feeReceiptRepository;
@@ -84,38 +82,28 @@ public class F29CalculatorService {
             // Process each line in the entry
             for (AccountingEntryLine line : entry.getLines()) {
                 String accountCode = line.accountCode();
-                BigDecimal amount = line.credit().add(line.debit()); // Total movement
 
-                switch (accountCode) {
-                    case IVA_DEBITO_FISCAL:
-                        // VAT collected on sales (credit balance)
-                        vatDebit = vatDebit.add(line.credit());
-                        break;
+                if (accountCode.equals(IVA_DEBITO_FISCAL)) {
+                    // VAT collected on sales (Liability: Credit + / Debit -)
+                    // If IS_DEBIT (NC), subtract.
+                    vatDebit = vatDebit.add(line.credit()).subtract(line.debit());
 
-                    case IVA_CREDITO_FISCAL:
-                        // VAT paid on purchases (debit balance)
-                        vatCredit = vatCredit.add(line.debit());
-                        break;
+                } else if (accountCode.equals(IVA_CREDITO_FISCAL)) {
+                    // VAT paid on purchases (Asset: Debit + / Credit -)
+                    // If IS_CREDIT (NC), subtract.
+                    vatCredit = vatCredit.add(line.debit()).subtract(line.credit());
 
-                    case VENTAS_NACIONALES:
-                        // Taxable sales (credit balance)
-                        totalSalesTaxable = totalSalesTaxable.add(line.credit());
-                        break;
+                } else if (accountCode.startsWith("4")) {
+                    // CLASS 4: REVENUE (INGRESOS) (Credit + / Debit -)
+                    if (accountCode.equals(VENTAS_EXENTAS)) {
+                        totalSalesExempt = totalSalesExempt.add(line.credit()).subtract(line.debit());
+                    } else {
+                        totalSalesTaxable = totalSalesTaxable.add(line.credit()).subtract(line.debit());
+                    }
 
-                    case VENTAS_EXENTAS:
-                        // Exempt sales (credit balance)
-                        totalSalesExempt = totalSalesExempt.add(line.credit());
-                        break;
-
-                    case COSTO_VENTAS:
-                        // Purchases approximation (debit balance)
-                        // In a real system, you'd have specific purchase accounts
-                        totalPurchasesTaxable = totalPurchasesTaxable.add(line.debit());
-                        break;
-
-                    default:
-                        // Ignore other accounts
-                        break;
+                } else if (accountCode.startsWith("5")) {
+                    // CLASS 5: EXPENSES (GASTOS) (Debit + / Credit -)
+                    totalPurchasesTaxable = totalPurchasesTaxable.add(line.debit()).subtract(line.credit());
                 }
             }
         }
@@ -130,19 +118,39 @@ public class F29CalculatorService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Calculate final total to pay
-        // Logic: Pay VAT (if positive) + Fee Withholdings
-        // Note: If VAT is negative (credit), you don't pay VAT, but you might still pay
-        // Retentions.
-        // Usually surplus VAT credit is carried over, it doesn't offset Fee
-        // Withholdings directly in simple payment logic,
-        // but financially you pay the difference or the sum.
-        // For F29 "Total a Pagar" box:
-        // Sum of all taxes - PPM - etc.
-        // We will sum (VAT > 0 ? VAT : 0) + Fees.
-        // If VAT < 0, it is accumulated credit.
-
         BigDecimal vatToPay = vatPayable.max(BigDecimal.ZERO);
+        BigDecimal recoverable = vatPayable.min(BigDecimal.ZERO).abs();
         BigDecimal totalPayable = vatToPay.add(feeWithholding);
+
+        // Generar detalle de líneas SII
+        List<F29Report.F29Line> details = new ArrayList<>();
+
+        // Débitos (Ventas)
+        if (vatDebit.compareTo(BigDecimal.ZERO) > 0) {
+            // Code 538: Débito Fiscal IVA
+            details.add(new F29Report.F29Line("538", "Débito Fiscal IVA", vatDebit));
+        }
+        if (totalSalesTaxable.compareTo(BigDecimal.ZERO) > 0) {
+            // Code 503: Ventas Netas
+            details.add(new F29Report.F29Line("503", "Ventas Netas", totalSalesTaxable));
+        }
+
+        // Créditos (Compras)
+        if (vatCredit.compareTo(BigDecimal.ZERO) > 0) {
+            // Code 520: Crédito Fiscal IVA
+            details.add(new F29Report.F29Line("520", "Crédito Fiscal IVA", vatCredit));
+        }
+
+        if (vatToPay.compareTo(BigDecimal.ZERO) > 0) {
+            details.add(new F29Report.F29Line("089", "Impuesto Determinado", vatToPay));
+        } else {
+            // Code 077: Remanente Crédito Fiscal
+            details.add(new F29Report.F29Line("077", "Remanente Crédito Fiscal", recoverable));
+        }
+
+        if (feeWithholding.compareTo(BigDecimal.ZERO) > 0) {
+            details.add(new F29Report.F29Line("151", "Retención Honorarios (13.75%)", feeWithholding));
+        }
 
         return new F29Report(
                 period,
@@ -152,9 +160,11 @@ public class F29CalculatorService {
                 totalPurchasesExempt,
                 vatDebit,
                 vatCredit,
-                vatPayable,
+                vatToPay,
+                recoverable,
                 feeWithholding,
                 totalPayable,
+                details,
                 evidenceIds);
     }
 

@@ -51,17 +51,44 @@ public class ReportingController {
     private final BalanceSheetService balanceSheetService;
     private final F29CalculatorService f29CalculatorService;
     private final F29SenderService f29SenderService;
+    private final com.casrusil.siierpai.modules.accounting.application.service.ReportingService reportingService;
+    private final com.casrusil.siierpai.modules.accounting.application.service.WeeklyReportService weeklyReportService;
 
     public ReportingController(SearchInvoicesUseCase searchInvoicesUseCase,
             ExcelExportService excelExportService,
             BalanceSheetService balanceSheetService,
             F29CalculatorService f29CalculatorService,
-            F29SenderService f29SenderService) {
+            F29SenderService f29SenderService,
+            com.casrusil.siierpai.modules.accounting.application.service.ReportingService reportingService,
+            com.casrusil.siierpai.modules.accounting.application.service.WeeklyReportService weeklyReportService) {
         this.searchInvoicesUseCase = searchInvoicesUseCase;
         this.excelExportService = excelExportService;
         this.balanceSheetService = balanceSheetService;
         this.f29CalculatorService = f29CalculatorService;
         this.f29SenderService = f29SenderService;
+        this.reportingService = reportingService;
+        this.weeklyReportService = weeklyReportService;
+    }
+
+    @PostMapping("/weekly/generate")
+    public ResponseEntity<Void> generateWeeklyReport() {
+        CompanyId companyId = CompanyContext.requireCompanyId();
+        // In a real scenario, we get the email from the authenticated user context
+        // For now, let's assume a default or fetch from context if available
+        // UserContext.getCurrentUserEmail() - assuming this exists or similar
+        String userEmail = "user@example.com"; // Placeholder until User Context available
+        // Ideally: String userEmail =
+        // SecurityContextHolder.getContext().getAuthentication().getName();
+
+        weeklyReportService.generateAndSendWeeklyReport(companyId, userEmail);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/income-statement")
+    public ResponseEntity<com.casrusil.siierpai.modules.accounting.domain.dto.IncomeStatementReportDTO> getIncomeStatement(
+            @RequestParam(defaultValue = "#{T(java.time.LocalDate).now().getMonthValue()}") int month,
+            @RequestParam(defaultValue = "#{T(java.time.LocalDate).now().getYear()}") int year) {
+        return ResponseEntity.ok(reportingService.generateIncomeStatement(month, year));
     }
 
     @GetMapping("/sales/excel")

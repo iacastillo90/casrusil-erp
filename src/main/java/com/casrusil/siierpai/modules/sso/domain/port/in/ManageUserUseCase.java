@@ -67,7 +67,7 @@ public interface ManageUserUseCase {
      * @throws IllegalArgumentException si el email ya existe o es inválido
      * @see com.casrusil.siierpai.modules.sso.infrastructure.security.PasswordEncoder
      */
-    User createUser(String email, String rawPassword, UserRole role, CompanyId companyId);
+    User createUser(String email, String fullName, String rawPassword, UserRole role, CompanyId companyId);
 
     /**
      * Actualiza la información de un usuario existente.
@@ -99,4 +99,6 @@ public interface ManageUserUseCase {
      * @throws SecurityException        si la contraseña antigua es incorrecta
      */
     void changePassword(UserId id, String oldPassword, String newPassword);
+
+    java.util.List<User> getUsersByCompany(com.casrusil.siierpai.shared.domain.valueobject.CompanyId companyId);
 }

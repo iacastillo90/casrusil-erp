@@ -124,4 +124,36 @@ public class AccountingEntryJpaAdapter implements AccountingEntryRepository {
                                 lines,
                                 entity.getType());
         }
+
+        @Override
+        public List<AccountingEntry> findInPeriodForClasses(CompanyId companyId, java.time.LocalDate from,
+                        java.time.LocalDate to, List<Integer> classes) {
+                // For simplicity and speed in this demo, fetching all by company and filtering
+                // in memory.
+                // In production with millions of rows, use a custom @Query join or Criteria
+                // API.
+                return findByCompanyId(companyId).stream()
+                                .filter(entry -> !entry.getEntryDate().isBefore(from)
+                                                && !entry.getEntryDate().isAfter(to))
+                                .filter(entry -> entry.getLines().stream()
+                                                .anyMatch(line -> classes.stream()
+                                                                .anyMatch(cls -> line.accountCode()
+                                                                                .startsWith(String.valueOf(cls)))))
+                                .collect(Collectors.toList());
+        }
+
+        @Override
+        public void deleteByReferenceTypeAndPeriod(CompanyId companyId, String referenceType, java.time.LocalDate from,
+                        java.time.LocalDate to) {
+                java.time.ZoneId zone = java.time.ZoneId.systemDefault();
+                java.time.Instant startDate = from.atStartOfDay(zone).toInstant();
+                // End of day
+                java.time.Instant endDate = to.atTime(java.time.LocalTime.MAX).atZone(zone).toInstant();
+
+                jpaRepository.deleteByCompanyIdAndReferenceTypeAndOccurredOnBetween(
+                                companyId.value(),
+                                referenceType,
+                                startDate,
+                                endDate);
+        }
 }

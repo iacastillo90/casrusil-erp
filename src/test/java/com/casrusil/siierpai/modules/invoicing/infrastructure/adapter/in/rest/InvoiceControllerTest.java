@@ -33,8 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(InvoiceController.class)
 class InvoiceControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean
     private CreateInvoiceUseCase createInvoiceUseCase;
@@ -46,7 +46,10 @@ class InvoiceControllerTest {
     private com.casrusil.siierpai.modules.sso.infrastructure.security.JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    public InvoiceControllerTest(MockMvc mockMvc, ObjectMapper objectMapper) {
+        this.mockMvc = mockMvc;
+        this.objectMapper = objectMapper;
+    }
 
     @Test
     @WithMockUser

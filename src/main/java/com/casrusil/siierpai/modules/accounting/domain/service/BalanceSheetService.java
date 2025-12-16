@@ -80,6 +80,8 @@ public class BalanceSheetService {
         BigDecimal totalAssets = BigDecimal.ZERO;
         BigDecimal totalLiabilities = BigDecimal.ZERO;
         BigDecimal totalEquity = BigDecimal.ZERO;
+        BigDecimal totalLoss = BigDecimal.ZERO; // Para sumar gastos
+        BigDecimal totalGain = BigDecimal.ZERO; // Para sumar ingresos
 
         // Classify balances by account type
         for (Map.Entry<String, BigDecimal> entry : balances.entrySet()) {
@@ -107,7 +109,43 @@ public class BalanceSheetService {
                 BigDecimal creditBalance = rawBalance.negate();
                 equityAccounts.put(account.getName(), creditBalance);
                 totalEquity = totalEquity.add(creditBalance);
+            } else if (type == AccountType.EXPENSE) {
+                // Gastos suelen ser saldo deudor (+)
+                totalLoss = totalLoss.add(rawBalance);
+            } else if (type == AccountType.REVENUE) {
+                // Ingresos suelen ser saldo acreedor (-) en rawBalance
+                // Sumamos el valor absoluto o raw según tu lógica de signo
+                totalGain = totalGain.add(rawBalance);
             }
+        }
+
+        // --- 🚀 LA MAGIA FINANCIERA ---
+        // Calculamos el Resultado: (Ingresos - Gastos)
+        // Nota: Ajusta los signos según como venga 'rawBalance' de tu base de datos
+        // Si Ganancia viene negativo (Haber) y Pérdida positivo (Debe):
+        // Total Gain (negative) + Total Loss (positive) = Net Result (if negative ->
+        // profit, if positive -> loss)
+        // Wait, Revenue (Credit) is negative in rawBalance (Debit - Credit).
+        // Expense (Debit) is positive in rawBalance.
+        // So rawResult = Revenue + Expense.
+        // Example: Rev -100, Exp +80. Result = -20 (Credit balance -> Profit).
+        // Example: Rev -100, Exp +120. Result = +20 (Debit balance -> Loss).
+
+        BigDecimal rawResult = totalGain.add(totalLoss);
+
+        // Inyectar en Patrimonio
+        // If rawResult is negative (Credit > Debit), it's a profit.
+        String resultLabel = rawResult.compareTo(BigDecimal.ZERO) < 0 ? "UTILIDAD DEL EJERCICIO"
+                : "PÉRDIDA DEL EJERCICIO";
+
+        // We want to display positive number for Equity.
+        // If Profit (-20), we negate to show 20.
+        // If Loss (+20), we negate to show -20 (reducing equity).
+        BigDecimal displayResult = rawResult.negate();
+
+        if (displayResult.compareTo(BigDecimal.ZERO) != 0) {
+            equityAccounts.put(resultLabel, displayResult);
+            totalEquity = totalEquity.add(displayResult);
         }
 
         boolean isBalanced = totalAssets.compareTo(totalLiabilities.add(totalEquity)) == 0;

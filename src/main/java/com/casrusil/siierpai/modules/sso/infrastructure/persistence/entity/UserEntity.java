@@ -3,6 +3,8 @@ package com.casrusil.siierpai.modules.sso.infrastructure.persistence.entity;
 import com.casrusil.siierpai.modules.sso.domain.model.UserRole;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -25,6 +27,9 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "full_name")
+    private String fullName;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
@@ -41,19 +46,30 @@ public class UserEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_preferences", schema = "sso", joinColumns = @JoinColumn(name = "user_id"))
+    @MapKeyColumn(name = "pref_key")
+    @Column(name = "pref_value")
+    private Map<String, String> preferences = new HashMap<>();
+
     public UserEntity() {
     }
 
-    public UserEntity(UUID id, String email, String passwordHash, UserRole role, UUID companyId, boolean isActive,
-            Instant createdAt) {
+    public UserEntity(UUID id, String email, String fullName, String passwordHash, UserRole role, UUID companyId,
+            boolean isActive,
+            Instant createdAt, Map<String, String> preferences) {
         this.id = id;
         this.email = email;
+        this.fullName = fullName;
         this.passwordHash = passwordHash;
         this.role = role;
         this.companyId = companyId;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.preferences = preferences;
     }
+
+    // ... existing getters setters .. since we replaced up to 104, careful
 
     public UUID getId() {
         return id;
@@ -69,6 +85,14 @@ public class UserEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPasswordHash() {
@@ -101,6 +125,14 @@ public class UserEntity {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Map<String, String> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Map<String, String> preferences) {
+        this.preferences = preferences;
     }
 
     public Instant getCreatedAt() {

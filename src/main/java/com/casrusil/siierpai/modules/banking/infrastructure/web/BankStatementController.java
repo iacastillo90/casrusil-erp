@@ -21,13 +21,13 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/v1/bank")
-public class BankReconciliationController {
+public class BankStatementController {
 
     private final BankStatementParser parser;
     private final ReconciliationService reconciliationService;
     private final BankTransactionRepository bankTransactionRepository;
 
-    public BankReconciliationController(BankStatementParser parser,
+    public BankStatementController(BankStatementParser parser,
             ReconciliationService reconciliationService,
             BankTransactionRepository bankTransactionRepository) {
         this.parser = parser;
@@ -48,7 +48,8 @@ public class BankReconciliationController {
 
             if (filename != null && filename.endsWith(".csv")) {
                 transactions = parser.parseCsv(file.getInputStream(), CompanyContext.requireCompanyId());
-            } else if (filename != null && (filename.endsWith(".xlsx") || filename.endsWith(".xls"))) {
+            } else if (filename != null
+                    && (filename.endsWith(".xlsx") || filename.endsWith(".xls") || filename.endsWith(".xlsb"))) {
                 transactions = parser.parseExcel(file.getInputStream(), CompanyContext.requireCompanyId());
             } else {
                 return ResponseEntity.badRequest().body(Map.of("error", "Unsupported file format. Use CSV or Excel."));

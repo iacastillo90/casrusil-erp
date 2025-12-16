@@ -41,16 +41,37 @@ public class CompanyEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Column(name = "commercial_address")
+    private String commercialAddress;
+
+    @Column(name = "website")
+    private String website;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "logo_url")
+    private String logoUrl;
+
+    @Column(name = "is_profile_complete", nullable = false, columnDefinition = "boolean default false")
+    private boolean isProfileComplete;
+
     public CompanyEntity() {
     }
 
-    public CompanyEntity(UUID id, String rut, String razonSocial, String email, boolean isActive, Instant createdAt) {
+    public CompanyEntity(UUID id, String rut, String razonSocial, String email, boolean isActive, Instant createdAt,
+            String commercialAddress, String website, String phoneNumber, String logoUrl, boolean isProfileComplete) {
         this.id = id;
         this.rut = rut;
         this.razonSocial = razonSocial;
         this.email = email;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.commercialAddress = commercialAddress;
+        this.website = website;
+        this.phoneNumber = phoneNumber;
+        this.logoUrl = logoUrl;
+        this.isProfileComplete = isProfileComplete;
     }
 
     public UUID getId() {
@@ -99,5 +120,45 @@ public class CompanyEntity {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCommercialAddress() {
+        return commercialAddress;
+    }
+
+    public void setCommercialAddress(String commercialAddress) {
+        this.commercialAddress = commercialAddress;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
+    public boolean isProfileComplete() {
+        return isProfileComplete;
+    }
+
+    public void setProfileComplete(boolean profileComplete) {
+        isProfileComplete = profileComplete;
     }
 }

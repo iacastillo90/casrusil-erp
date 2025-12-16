@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class BalanceSheetParser {
@@ -68,9 +70,9 @@ public class BalanceSheetParser {
                                 new OpeningBalanceService.OpeningBalanceItem(accountCode, description, debit, credit));
 
                     } catch (Exception e) {
-                        // Log parsing error but continue? Or throw?
-                        // For now, simple skip of malformed lines
-                        System.err.println("Skipping malformed line: " + line);
+                        // Log parsing error but continue
+                        org.slf4j.LoggerFactory.getLogger(BalanceSheetParser.class).error("Skipping malformed line: {}",
+                                line, e);
                     }
                 }
             }

@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 @EnableWebSecurity
@@ -23,9 +25,11 @@ public class SecurityConfig {
 
     private final com.casrusil.siierpai.modules.sso.infrastructure.security.SecurityFilter securityFilter;
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(SecurityConfig.class);
+
     public SecurityConfig(com.casrusil.siierpai.modules.sso.infrastructure.security.SecurityFilter securityFilter) {
         this.securityFilter = securityFilter;
-        System.out.println("🔥 CARGANDO CONFIGURACIÓN DE SEGURIDAD PERSONALIZADA 🔥");
+        log.info("🔥 CARGANDO CONFIGURACIÓN DE SEGURIDAD PERSONALIZADA 🔥");
     }
 
     @Bean

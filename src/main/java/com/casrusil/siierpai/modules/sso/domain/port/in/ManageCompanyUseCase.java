@@ -63,13 +63,27 @@ public interface ManageCompanyUseCase {
     /**
      * Actualiza la información de una empresa existente.
      * 
-     * @param id          ID de la empresa a actualizar
-     * @param razonSocial Nueva razón social
-     * @param email       Nuevo email de contacto
+     * @param id                ID de la empresa a actualizar
+     * @param razonSocial       Nueva razón social
+     * @param email             Nuevo email de contacto
+     * @param commercialAddress Nueva dirección comercial
+     * @param website           Nuevo sitio web
+     * @param phoneNumber       Nuevo número de teléfono
+     * @param logoUrl           Nueva URL del logo
      * @return La empresa actualizada
      * @throws IllegalArgumentException si la empresa no existe
      */
-    Company updateCompany(CompanyId id, String razonSocial, String email);
+    Company updateCompany(CompanyId id, String razonSocial, String email, String commercialAddress, String website,
+            String phoneNumber, String logoUrl);
+
+    /**
+     * Obtiene una empresa por su ID.
+     * 
+     * @param id ID de la empresa a buscar
+     * @return La empresa encontrada
+     * @throws IllegalArgumentException si la empresa no existe
+     */
+    Company getCompany(CompanyId id);
 
     /**
      * Activa una empresa previamente desactivada.

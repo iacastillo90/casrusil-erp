@@ -11,13 +11,18 @@ import java.util.List;
  * Tool de LangChain4j para sugerir mejoras de eficiencia basadas en impacto
  * ambiental.
  */
+import com.casrusil.siierpai.modules.financial_shield.domain.service.CircularProcurementService;
+
 @Component
 public class EfficiencyAdvisorTool {
 
     private final SustainabilityRecordRepository sustainabilityRepository;
+    private final CircularProcurementService circularService;
 
-    public EfficiencyAdvisorTool(SustainabilityRecordRepository sustainabilityRepository) {
+    public EfficiencyAdvisorTool(SustainabilityRecordRepository sustainabilityRepository,
+            CircularProcurementService circularService) {
         this.sustainabilityRepository = sustainabilityRepository;
+        this.circularService = circularService;
     }
 
     @Tool("Sugiere reducción de gastos basada en impacto ambiental analizando los últimos 3 meses")
@@ -35,6 +40,13 @@ public class EfficiencyAdvisorTool {
 
         for (Object[] cat : topCategories) {
             String category = (String) cat[0];
+
+            String alternative = circularService.suggestGreenAlternatives(category);
+            if (alternative != null) {
+                suggestions.append("  * 💡 OPORTUNIDAD: Compra a '").append(alternative)
+                        .append("' (Partner Verde) para reducir tu huella y mejorar tu Green Score.\n");
+            }
+
             if ("Combustible".equalsIgnoreCase(category) || "Transporte".equalsIgnoreCase(category)) {
                 suggestions.append("- TRANSPORTE: Se detectó alto impacto en transporte. Considere:\n");
                 suggestions.append("  * Planificar rutas logísticas para reducir kilometraje.\n");

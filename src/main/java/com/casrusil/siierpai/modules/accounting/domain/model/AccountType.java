@@ -19,6 +19,8 @@ package com.casrusil.siierpai.modules.accounting.domain.model;
  * (Ventas).</li>
  * <li>{@link #EXPENSE} (Gastos): Decrementos en beneficios económicos (Sueldos,
  * Servicios).</li>
+ * <li>{@link #GAIN} (Ganancia): Ingresos no operativos (Venta activo fijo).</li>
+ * <li>{@link #LOSS} (Pérdida): Gastos no operativos.</li>
  * </ul>
  * 
  * @since 1.0
@@ -28,5 +30,7 @@ public enum AccountType {
     LIABILITY,
     EQUITY,
     REVENUE,
-    EXPENSE
+    EXPENSE,
+    GAIN,
+    LOSS
 }

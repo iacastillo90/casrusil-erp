@@ -60,7 +60,12 @@ public class CompanyJpaAdapter implements CompanyRepository {
                 company.getRazonSocial(),
                 company.getEmail(),
                 company.isActive(),
-                company.getCreatedAt());
+                company.getCreatedAt(),
+                company.getCommercialAddress(),
+                company.getWebsite(),
+                company.getPhoneNumber(),
+                company.getLogoUrl(),
+                company.isProfileComplete());
     }
 
     private Company toDomain(CompanyEntity entity) {
@@ -70,6 +75,11 @@ public class CompanyJpaAdapter implements CompanyRepository {
                 entity.getRazonSocial(),
                 entity.getEmail(),
                 entity.isActive(),
-                entity.getCreatedAt());
+                entity.getCreatedAt(),
+                entity.getCommercialAddress(),
+                entity.getWebsite(),
+                entity.getPhoneNumber(),
+                entity.getLogoUrl(),
+                entity.isProfileComplete());
     }
 }

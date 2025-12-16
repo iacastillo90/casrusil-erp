@@ -59,4 +59,6 @@ public interface UserRepository {
      * @see com.casrusil.siierpai.modules.sso.application.service.AuthService
      */
     Optional<User> findByEmail(String email);
+
+    java.util.List<User> findAllByCompanyId(com.casrusil.siierpai.shared.domain.valueobject.CompanyId companyId);
 }

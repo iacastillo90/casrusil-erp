@@ -51,6 +51,7 @@ public class AccountingController {
     private final com.casrusil.siierpai.modules.accounting.domain.service.AccountingEntryService accountingEntryService;
     private final com.casrusil.siierpai.modules.accounting.infrastructure.parser.BalanceSheetParser balanceSheetParser;
     private final BalanceSheetService balanceSheetService;
+    private final com.casrusil.siierpai.modules.accounting.application.service.ReportingService reportingService;
 
     public AccountingController(AccountingEntryRepository accountingEntryRepository,
             AccountRepository accountRepository,
@@ -59,7 +60,8 @@ public class AccountingController {
             com.casrusil.siierpai.modules.accounting.application.service.OpeningBalanceService openingBalanceService,
             com.casrusil.siierpai.modules.accounting.domain.service.AccountingEntryService accountingEntryService,
             com.casrusil.siierpai.modules.accounting.infrastructure.parser.BalanceSheetParser balanceSheetParser,
-            BalanceSheetService balanceSheetService) {
+            BalanceSheetService balanceSheetService,
+            com.casrusil.siierpai.modules.accounting.application.service.ReportingService reportingService) {
         this.accountingEntryRepository = accountingEntryRepository;
         this.accountRepository = accountRepository;
         this.f29CalculatorService = f29CalculatorService;
@@ -68,6 +70,18 @@ public class AccountingController {
         this.accountingEntryService = accountingEntryService;
         this.balanceSheetParser = balanceSheetParser;
         this.balanceSheetService = balanceSheetService;
+        this.reportingService = reportingService;
+    }
+
+    @GetMapping("/reports/income-statement")
+    public ResponseEntity<com.casrusil.siierpai.modules.accounting.domain.dto.IncomeStatementReportDTO> getIncomeStatement(
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year) {
+        // Lógica de fallback para mes/año actual
+        int targetMonth = (month != null) ? month : LocalDate.now().getMonthValue();
+        int targetYear = (year != null) ? year : LocalDate.now().getYear();
+
+        return ResponseEntity.ok(reportingService.generateIncomeStatement(targetMonth, targetYear));
     }
 
     @PostMapping("/opening-balance/upload")

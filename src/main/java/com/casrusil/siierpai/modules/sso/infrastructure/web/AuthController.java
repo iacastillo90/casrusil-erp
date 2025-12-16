@@ -32,10 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping({ "/api/v1/auth", "/auth" })
 public class AuthController {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
-        System.out.println("🚀 CARGANDO AUTH CONTROLLER - SI VES ESTO, ESTOY VIVO");
+        log.info("🚀 CARGANDO AUTH CONTROLLER");
         this.authService = authService;
     }
 

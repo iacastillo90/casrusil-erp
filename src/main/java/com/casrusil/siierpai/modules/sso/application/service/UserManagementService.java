@@ -41,23 +41,35 @@ public class UserManagementService implements ManageUserUseCase {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.casrusil.siierpai.shared.infrastructure.mail.EmailService emailService;
+    private final com.casrusil.siierpai.modules.sso.domain.port.in.ManageCompanyUseCase companyService;
 
-    public UserManagementService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserManagementService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            com.casrusil.siierpai.shared.infrastructure.mail.EmailService emailService,
+            com.casrusil.siierpai.modules.sso.domain.port.in.ManageCompanyUseCase companyService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+        this.companyService = companyService;
     }
 
     @Override
     @Transactional
-    public User createUser(String email, String rawPassword, UserRole role, CompanyId companyId) {
+    public User createUser(String email, String fullName, String rawPassword, UserRole role, CompanyId companyId) {
         verifyCompanyContext(companyId);
         if (userRepository.findByEmail(email).isPresent()) {
             throw new DomainException("User with email " + email + " already exists") {
             };
         }
         String passwordHash = passwordEncoder.encode(rawPassword);
-        User user = User.create(email, passwordHash, role, companyId);
-        return userRepository.save(user);
+        User user = User.create(email, fullName, passwordHash, role, companyId);
+        User savedUser = userRepository.save(user); // Save first
+
+        // Send Welcome Email
+        String companyName = companyService.getCompany(companyId).getRazonSocial();
+        emailService.sendWelcomeEmail(email, fullName != null ? fullName : email, companyName);
+
+        return savedUser;
     }
 
     @Override
@@ -102,6 +114,12 @@ public class UserManagementService implements ManageUserUseCase {
 
         user.changePassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    @Override
+    public java.util.List<User> getUsersByCompany(CompanyId companyId) {
+        verifyCompanyContext(companyId);
+        return userRepository.findAllByCompanyId(companyId);
     }
 
     private void verifyCompanyContext(CompanyId targetCompanyId) {

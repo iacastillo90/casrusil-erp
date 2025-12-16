@@ -26,20 +26,22 @@ class InvoiceImportControllerTest {
     private MockMvc mockMvc;
     private StubCreateInvoiceUseCase createInvoiceUseCase;
     private CompanyRepository companyRepository;
-    private FeeReceiptService feeReceiptService;
+    private com.casrusil.siierpai.modules.partners.application.service.PartnerManagementService partnerManagementService;
 
     @BeforeEach
     void setUp() {
         createInvoiceUseCase = new StubCreateInvoiceUseCase();
         companyRepository = org.mockito.Mockito.mock(CompanyRepository.class);
         feeReceiptService = org.mockito.Mockito.mock(FeeReceiptService.class);
+        partnerManagementService = org.mockito.Mockito
+                .mock(com.casrusil.siierpai.modules.partners.application.service.PartnerManagementService.class);
 
         // Mock Company retrieval
         org.mockito.Mockito.when(companyRepository.findById(org.mockito.ArgumentMatchers.any()))
                 .thenReturn(java.util.Optional.of(Company.create("76123456-7", "Test SpA", "test@test.com")));
 
         InvoiceImportController controller = new InvoiceImportController(createInvoiceUseCase, companyRepository,
-                feeReceiptService);
+                feeReceiptService, partnerManagementService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

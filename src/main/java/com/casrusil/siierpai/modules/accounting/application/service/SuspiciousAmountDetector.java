@@ -2,26 +2,33 @@ package com.casrusil.siierpai.modules.accounting.application.service;
 
 import com.casrusil.siierpai.modules.accounting.domain.model.AuditAlert;
 import com.casrusil.siierpai.modules.invoicing.domain.model.Invoice;
+import com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType;
 import com.casrusil.siierpai.modules.invoicing.domain.port.out.InvoiceRepository;
 import com.casrusil.siierpai.shared.domain.valueobject.CompanyId;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * Servicio para detectar montos sospechosos usando análisis estadístico.
- * Identifica facturas con montos inusuales basándose en patrones históricos.
+ * Servicio para detectar montos sospechosos usando análisis estadístico
+ * híbrido.
+ * Combina análisis específico por cliente/proveedor con benchmarks globales.
  */
 @Service
 public class SuspiciousAmountDetector {
 
     private final InvoiceRepository invoiceRepository;
     private static final double STANDARD_DEVIATIONS_THRESHOLD = 3.0;
+    // Formateador para pesos chilenos
+    private static final NumberFormat CLP_FORMAT = NumberFormat.getCurrencyInstance(new Locale("es", "CL"));
 
     public SuspiciousAmountDetector(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
@@ -29,67 +36,98 @@ public class SuspiciousAmountDetector {
 
     /**
      * Detecta facturas con montos sospechosos.
-     * Usa análisis estadístico por proveedor para identificar outliers.
+     * Estrategia Híbrida:
+     * 1. Si el cliente/proveedor tiene historia suficiente (>=5), compara contra su
+     * propia historia.
+     * 2. Si es nuevo o tiene poca historia, compara contra el promedio global de
+     * Ventas/Compras.
      */
     public List<AuditAlert> detectSuspiciousAmounts(CompanyId companyId) {
         List<AuditAlert> alerts = new ArrayList<>();
         List<Invoice> allInvoices = invoiceRepository.findByCompanyId(companyId);
 
-        // Agrupar facturas por emisor
-        Map<String, List<Invoice>> invoicesByIssuer = groupByIssuer(allInvoices);
+        // 1. Calcular Estadísticas Globales (Fallback)
+        List<Invoice> allSales = allInvoices.stream()
+                .filter(i -> i.getTransactionType() == TransactionType.SALE)
+                .toList();
+        List<Invoice> allPurchases = allInvoices.stream()
+                .filter(i -> i.getTransactionType() == TransactionType.PURCHASE)
+                .toList();
 
-        // Analizar cada grupo
-        for (Map.Entry<String, List<Invoice>> entry : invoicesByIssuer.entrySet()) {
-            String issuerRut = entry.getKey();
-            List<Invoice> issuerInvoices = entry.getValue();
+        Statistics globalSalesStats = calculateStatistics(allSales);
+        Statistics globalPurchaseStats = calculateStatistics(allPurchases);
 
-            // Necesitamos al menos 5 facturas para análisis estadístico
-            if (issuerInvoices.size() < 5) {
+        // 2. Agrupar por Contraparte
+        Map<String, List<Invoice>> invoicesByCounterparty = groupByCounterparty(allInvoices);
+
+        // 3. Analizar cada grupo
+        for (Map.Entry<String, List<Invoice>> entry : invoicesByCounterparty.entrySet()) {
+            List<Invoice> counterpartyInvoices = entry.getValue();
+            if (counterpartyInvoices.isEmpty())
+                continue;
+
+            boolean isSaleGroup = counterpartyInvoices.get(0).getTransactionType() == TransactionType.SALE;
+
+            // Decisión: Usar Estadísticas Locales (Específicas) o Globales
+            boolean hasEnoughHistory = counterpartyInvoices.size() >= 5;
+            Statistics statsToUse;
+            String analysisContext; // "Local" o "Global"
+
+            if (hasEnoughHistory) {
+                statsToUse = calculateStatistics(counterpartyInvoices);
+                analysisContext = "Local";
+            } else {
+                statsToUse = isSaleGroup ? globalSalesStats : globalPurchaseStats;
+                analysisContext = "Global";
+            }
+
+            // Si la desviación estándar es 0 (todos los montos iguales) o stats inválidas,
+            // saltar
+            if (statsToUse.stdDev().compareTo(BigDecimal.ZERO) == 0) {
                 continue;
             }
 
-            Statistics stats = calculateStatistics(issuerInvoices);
-
             // Detectar outliers
-            for (Invoice invoice : issuerInvoices) {
-                double zScore = calculateZScore(invoice.getTotalAmount(), stats);
+            for (Invoice invoice : counterpartyInvoices) {
+                double zScore = calculateZScore(invoice.getTotalAmount(), statsToUse);
 
                 if (Math.abs(zScore) > STANDARD_DEVIATIONS_THRESHOLD) {
-                    AuditAlert alert = createSuspiciousAmountAlert(invoice, stats, zScore);
+                    AuditAlert alert = createSuspiciousAmountAlert(invoice, statsToUse, zScore, analysisContext);
                     alerts.add(alert);
                 }
             }
         }
 
-        // También detectar montos redondos sospechosos (ej: exactamente $1,000,000)
+        // También detectar montos redondos sospechosos
         alerts.addAll(detectRoundAmounts(allInvoices));
 
         return alerts;
     }
 
-    /**
-     * Agrupa facturas por emisor.
-     */
-    private Map<String, List<Invoice>> groupByIssuer(List<Invoice> invoices) {
+    private Map<String, List<Invoice>> groupByCounterparty(List<Invoice> invoices) {
         Map<String, List<Invoice>> grouped = new HashMap<>();
         for (Invoice invoice : invoices) {
-            grouped.computeIfAbsent(invoice.getIssuerRut(), k -> new ArrayList<>()).add(invoice);
+            String key;
+            if (invoice.getTransactionType() == TransactionType.SALE) {
+                key = invoice.getReceiverRut(); // El cliente
+            } else {
+                key = invoice.getIssuerRut(); // El proveedor
+            }
+            grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(invoice);
         }
         return grouped;
     }
 
-    /**
-     * Calcula estadísticas (media y desviación estándar) de montos.
-     */
     private Statistics calculateStatistics(List<Invoice> invoices) {
-        // Calcular media
+        if (invoices.isEmpty())
+            return new Statistics(BigDecimal.ZERO, BigDecimal.ZERO);
+
         BigDecimal sum = BigDecimal.ZERO;
         for (Invoice invoice : invoices) {
             sum = sum.add(invoice.getTotalAmount());
         }
         BigDecimal mean = sum.divide(BigDecimal.valueOf(invoices.size()), 2, RoundingMode.HALF_UP);
 
-        // Calcular desviación estándar
         BigDecimal varianceSum = BigDecimal.ZERO;
         for (Invoice invoice : invoices) {
             BigDecimal diff = invoice.getTotalAmount().subtract(mean);
@@ -101,9 +139,6 @@ public class SuspiciousAmountDetector {
         return new Statistics(mean, BigDecimal.valueOf(stdDev));
     }
 
-    /**
-     * Calcula el Z-score (número de desviaciones estándar desde la media).
-     */
     private double calculateZScore(BigDecimal amount, Statistics stats) {
         if (stats.stdDev().compareTo(BigDecimal.ZERO) == 0) {
             return 0.0;
@@ -112,16 +147,15 @@ public class SuspiciousAmountDetector {
         return diff.divide(stats.stdDev(), 4, RoundingMode.HALF_UP).doubleValue();
     }
 
-    /**
-     * Detecta montos redondos sospechosos.
-     */
     private List<AuditAlert> detectRoundAmounts(List<Invoice> invoices) {
         List<AuditAlert> alerts = new ArrayList<>();
 
         for (Invoice invoice : invoices) {
             BigDecimal amount = invoice.getTotalAmount();
+            // Evitar falsos positivos en montos muy bajos
+            if (amount.compareTo(BigDecimal.valueOf(10000)) < 0)
+                continue;
 
-            // Verificar si es un número redondo (múltiplo de 100,000 o 1,000,000)
             if (amount.remainder(BigDecimal.valueOf(1000000)).compareTo(BigDecimal.ZERO) == 0 ||
                     amount.remainder(BigDecimal.valueOf(100000)).compareTo(BigDecimal.ZERO) == 0) {
 
@@ -130,7 +164,7 @@ public class SuspiciousAmountDetector {
                         "La factura %s tiene un monto exactamente redondo: %s. " +
                                 "Esto podría indicar una estimación o error de digitación.",
                         invoice.getFolio(),
-                        amount);
+                        CLP_FORMAT.format(amount));
 
                 AuditAlert alert = new AuditAlert(
                         AuditAlert.Type.SUSPICIOUS_AMOUNT,
@@ -139,35 +173,51 @@ public class SuspiciousAmountDetector {
                         description,
                         invoice.getId().toString(),
                         "Verificar que el monto sea correcto y no una estimación.");
-
                 alerts.add(alert);
             }
         }
-
         return alerts;
     }
 
-    /**
-     * Crea una alerta de monto sospechoso.
-     */
-    private AuditAlert createSuspiciousAmountAlert(Invoice invoice, Statistics stats, double zScore) {
+    private AuditAlert createSuspiciousAmountAlert(Invoice invoice, Statistics stats, double zScore,
+            String analysisContext) {
+        boolean isSale = invoice.getTransactionType() == TransactionType.SALE;
+        String entityType = isSale ? "del cliente" : "del proveedor";
+
+        String entityRut = isSale ? invoice.getReceiverRut() : invoice.getIssuerRut();
+        String businessName = invoice.getBusinessName();
+        if (businessName == null || businessName.isBlank() || "Unknown".equalsIgnoreCase(businessName)) {
+            businessName = "Sin Razón Social";
+        }
+
+        String formattedAmount = CLP_FORMAT.format(invoice.getTotalAmount());
+        String formattedMean = CLP_FORMAT.format(stats.mean());
+
         String title = "Monto Inusual Detectado";
+
+        // Construir mensaje según contexto (Local vs Global)
+        String comparisonBase;
+        if ("Local".equals(analysisContext)) {
+            comparisonBase = String.format("histórico (%s) para este %s", formattedMean,
+                    isSale ? "cliente" : "proveedor");
+        } else {
+            comparisonBase = String.format("global (%s) de todas las %s", formattedMean, isSale ? "ventas" : "compras");
+        }
+
         String description = String.format(
-                "La factura %s del proveedor %s tiene un monto inusual: %s. " +
-                        "Este monto está %.1f desviaciones estándar alejado del promedio (%s). " +
-                        "Desviación estándar: %s",
+                "La factura %s %s %s (%s) presenta un monto atípico de %s.\n" +
+                        "Este valor se aleja %.1f desviaciones estándar del promedio %s.",
                 invoice.getFolio(),
-                invoice.getIssuerRut(),
-                invoice.getTotalAmount(),
+                entityType,
+                entityRut,
+                businessName,
+                formattedAmount,
                 Math.abs(zScore),
-                stats.mean(),
-                stats.stdDev());
+                comparisonBase);
 
         AuditAlert.Severity severity = Math.abs(zScore) > 4.0
                 ? AuditAlert.Severity.CRITICAL
                 : AuditAlert.Severity.WARNING;
-
-        String suggestedAction = "Verificar que el monto sea correcto. Podría ser un error de digitación o una transacción excepcional legítima.";
 
         return new AuditAlert(
                 AuditAlert.Type.SUSPICIOUS_AMOUNT,
@@ -175,12 +225,9 @@ public class SuspiciousAmountDetector {
                 title,
                 description,
                 invoice.getId().toString(),
-                suggestedAction);
+                "Verificar validez de la transacción. Posible error de digitación o venta excepcional.");
     }
 
-    /**
-     * Record para almacenar estadísticas.
-     */
     private record Statistics(BigDecimal mean, BigDecimal stdDev) {
     }
 }

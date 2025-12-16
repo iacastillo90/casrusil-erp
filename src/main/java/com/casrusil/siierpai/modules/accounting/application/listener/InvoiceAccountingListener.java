@@ -2,6 +2,7 @@ package com.casrusil.siierpai.modules.accounting.application.listener;
 
 import com.casrusil.siierpai.modules.accounting.domain.model.AccountingEntry;
 import com.casrusil.siierpai.modules.accounting.domain.model.AccountingEntryLine;
+import com.casrusil.siierpai.modules.accounting.domain.model.ClassificationRule;
 import com.casrusil.siierpai.modules.accounting.domain.service.AccountingEntryService;
 import com.casrusil.siierpai.modules.invoicing.domain.event.InvoiceCreatedEvent;
 import com.casrusil.siierpai.modules.invoicing.domain.model.Invoice;
@@ -22,6 +23,14 @@ public class InvoiceAccountingListener {
     private static final Logger logger = LoggerFactory.getLogger(InvoiceAccountingListener.class);
     private final AccountingEntryService accountingEntryService;
     private final com.casrusil.siierpai.modules.accounting.application.service.LearningService learningService;
+
+    // Standard Chilean Account Plan Constants
+    private static final String ACCOUNT_SALES_REVENUE = "410101"; // Ventas Afectas (Ingresos)
+    private static final String ACCOUNT_VAT_DEBIT = "210401"; // IVA Débito (Pasivo)
+    private static final String ACCOUNT_EXPENSES = "510101"; // Gastos Generales (Pérdida)
+    private static final String ACCOUNT_VAT_CREDIT = "110801"; // IVA Crédito Fiscal (Activo)
+    private static final String ACCOUNT_RECEIVABLE = "110501"; // Clientes (Activo)
+    private static final String ACCOUNT_PAYABLE = "210101"; // Proveedores (Pasivo)
 
     public InvoiceAccountingListener(AccountingEntryService accountingEntryService,
             com.casrusil.siierpai.modules.accounting.application.service.LearningService learningService) {
@@ -48,16 +57,17 @@ public class InvoiceAccountingListener {
     private AccountingEntry createEntryFromInvoice(Invoice invoice) {
         List<AccountingEntryLine> lines = new ArrayList<>();
 
-        // AJUSTE: Concatenar info en descripción con los nuevos datos
         String description = String.format("DTE %s Folio %d | %s | %s",
                 invoice.getType().getCode(),
                 invoice.getFolio(),
                 invoice.getIssuerRut(),
                 invoice.getBusinessName() != null ? invoice.getBusinessName() : "Unknown");
 
+        boolean isCreditNote = invoice.getType().getCode() == 61;
+
         var applicableRules = learningService.findApplicableRules(invoice.getCompanyId(), description);
 
-        // 1. Determinar Cuenta de Gasto/Ingreso
+        // 1. Determine Expense/Revenue Account
         String accountCode;
         if (!applicableRules.isEmpty()) {
             accountCode = applicableRules.get(0).getAccountCode();
@@ -65,13 +75,13 @@ public class InvoiceAccountingListener {
         } else {
             if (invoice
                     .getTransactionType() == com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType.SALE) {
-                accountCode = "310101"; // Ventas (default)
+                accountCode = ACCOUNT_SALES_REVENUE; // Fixed: Now 410101 (Revenue)
             } else {
-                accountCode = "510101"; // Costo de Ventas / Gastos (default)
+                accountCode = ACCOUNT_EXPENSES; // Fixed: Now 510101 (Expense)
             }
         }
 
-        // 2. Calcular Monto Exento (Total - Neto - IVA)
+        // 2. Calculate Exempt Amount
         BigDecimal exemptAmount = invoice.getTotalAmount()
                 .subtract(invoice.getNetAmount())
                 .subtract(invoice.getTaxAmount());
@@ -80,81 +90,78 @@ public class InvoiceAccountingListener {
         String taxPayerName = invoice.getBusinessName();
 
         if (invoice.getTransactionType() == com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType.SALE) {
-            // === VENTA ===
+            // === SALE ===
             taxPayerId = invoice.getReceiverRut();
-            String accountsReceivable = "110501";
             String accountsReceivableName = "Clientes";
-            String vatPayable = "210401";
             String vatPayableName = "IVA Débito Fiscal";
             String revenueName = "Ventas";
 
-            // Debe: Cliente me debe el Total
-            lines.add(AccountingEntryLine.debit(accountsReceivable, accountsReceivableName, invoice.getTotalAmount()));
+            // Debit: Client owes Total
+            addDebit(lines, isCreditNote, ACCOUNT_RECEIVABLE, accountsReceivableName, invoice.getTotalAmount());
 
-            // Haber: Ingreso Neto
+            // Credit: Net Revenue
             if (invoice.getNetAmount().compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.credit(accountCode, revenueName, invoice.getNetAmount()));
+                addCredit(lines, isCreditNote, accountCode, revenueName, invoice.getNetAmount());
             }
-            // Haber: Ingreso Exento (si existe)
+            // Credit: Exempt Revenue
             if (exemptAmount.compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.credit(accountCode, revenueName, exemptAmount));
+                addCredit(lines, isCreditNote, accountCode, revenueName, exemptAmount);
             }
-            // Haber: IVA por Pagar
+            // Credit: VAT Payable
             if (invoice.getTaxAmount().compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.credit(vatPayable, vatPayableName, invoice.getTaxAmount()));
+                addCredit(lines, isCreditNote, ACCOUNT_VAT_DEBIT, vatPayableName, invoice.getTaxAmount());
             }
 
         } else {
-            // === COMPRA ===
+            // === PURCHASE ===
             taxPayerId = invoice.getIssuerRut();
-            String accountsPayable = "210101";
             String accountsPayableName = "Proveedores";
-            String vatCredit = "110801"; // IVA Crédito Fiscal del Mes
             String vatCreditName = "IVA Crédito Fiscal";
             String vatCommon = "110502";
             String vatCommonName = "IVA Uso Común";
             String fixedAssetAccount = "150101";
             String fixedAssetAccountName = "Maquinaria y Equipos";
-            String expenseName = "Gasto"; // O "Costo de Ventas" si aplica
+            String expenseName = "Gasto";
 
-            // 1. Activo Fijo
+            // 1. Fixed Asset
             BigDecimal fixedAssetAmount = invoice.getFixedAssetAmount();
             if (fixedAssetAmount.compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.debit(fixedAssetAccount, fixedAssetAccountName, fixedAssetAmount));
+                addDebit(lines, isCreditNote, fixedAssetAccount, fixedAssetAccountName, fixedAssetAmount);
             }
 
-            // 2. Gasto (Neto - Activo Fijo)
+            // 2. Expense (Net - Fixed Asset)
             BigDecimal expenseAmount = invoice.getNetAmount().subtract(fixedAssetAmount);
             if (expenseAmount.compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.debit(accountCode, expenseName, expenseAmount));
+                addDebit(lines, isCreditNote, accountCode, expenseName, expenseAmount);
             }
 
-            // Debe: Gasto Exento
+            // Debit: Exempt Expense
             if (exemptAmount.compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.debit(accountCode, expenseName, exemptAmount));
+                addDebit(lines, isCreditNote, accountCode, expenseName, exemptAmount);
             }
 
-            // 3. IVA
+            // 3. VAT
             BigDecimal commonVat = invoice.getCommonUseVatAmount();
             BigDecimal standardVat = invoice.getTaxAmount().subtract(commonVat);
 
-            // IVA Uso Común
+            // VAT Common Use
             if (commonVat.compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.debit(vatCommon, vatCommonName, commonVat));
+                addDebit(lines, isCreditNote, vatCommon, vatCommonName, commonVat);
             }
-            // IVA Crédito Fiscal
+            // VAT Credit Fiscal
             if (standardVat.compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(AccountingEntryLine.debit(vatCredit, vatCreditName, standardVat));
+                // Fixed: Uses ACCOUNT_VAT_CREDIT (110801)
+                addDebit(lines, isCreditNote, ACCOUNT_VAT_CREDIT, vatCreditName, standardVat);
             }
 
-            // Haber: Le debo al Proveedor el Total
-            lines.add(AccountingEntryLine.credit(accountsPayable, accountsPayableName, invoice.getTotalAmount()));
+            // Credit: I owe the Supplier
+            addCredit(lines, isCreditNote, ACCOUNT_PAYABLE, accountsPayableName, invoice.getTotalAmount());
         }
 
         return new AccountingEntry(
                 invoice.getCompanyId(),
-                invoice.getDate(), // <--- CAMBIO CRÍTICO: Fecha real del documento
-                description,
+                invoice.getDate(),
+                description + (isCreditNote ? " (NC)" : ""),
                 invoice.getId().toString(),
                 "INVOICE",
                 taxPayerId,
@@ -164,5 +171,31 @@ public class InvoiceAccountingListener {
                 "POSTED",
                 lines,
                 com.casrusil.siierpai.modules.accounting.domain.model.EntryType.NORMAL);
+    }
+
+    /**
+     * Adds a Debit line normally. If it's a Credit Note, adds a Credit line
+     * instead.
+     */
+    private void addDebit(List<AccountingEntryLine> lines, boolean isCreditNote, String code, String name,
+            BigDecimal amount) {
+        if (isCreditNote) {
+            lines.add(AccountingEntryLine.credit(code, name, amount));
+        } else {
+            lines.add(AccountingEntryLine.debit(code, name, amount));
+        }
+    }
+
+    /**
+     * Adds a Credit line normally. If it's a Credit Note, adds a Debit line
+     * instead.
+     */
+    private void addCredit(List<AccountingEntryLine> lines, boolean isCreditNote, String code, String name,
+            BigDecimal amount) {
+        if (isCreditNote) {
+            lines.add(AccountingEntryLine.debit(code, name, amount));
+        } else {
+            lines.add(AccountingEntryLine.credit(code, name, amount));
+        }
     }
 }

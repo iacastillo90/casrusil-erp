@@ -75,6 +75,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             // Set CompanyContext using ScopedValue
             ScopedValue.where(CompanyContext.COMPANY_ID, companyId)
                     .run(() -> {
+                        // User Context population could go here if we had the name relative easily
+                        // For now we rely on CompanyContext.
+                        // Future: Fetch User Name from DB or Token
                         try {
                             filterChain.doFilter(request, response);
                         } catch (Exception e) {

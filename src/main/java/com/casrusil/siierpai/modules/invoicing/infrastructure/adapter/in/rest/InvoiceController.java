@@ -59,11 +59,18 @@ public class InvoiceController {
                                 InvoiceType.fromCode(request.tipoDte()),
                                 request.folio(),
                                 request.rutEmisor(),
+                                request.rutReceptor() != null ? request.rutReceptor() : "66.666.666-6", // Fallback or
+                                                                                                        // require it
                                 request.razonSocialEmisor(),
                                 request.fechaEmision(),
-                                request.montoTotal(),
                                 request.montoNeto(),
                                 request.montoIva(),
+                                request.montoTotal(),
+                                BigDecimal.ZERO, // Fixed Asset
+                                BigDecimal.ZERO, // Common Use VAT
+                                Invoice.ORIGIN_MANUAL,
+                                com.casrusil.siierpai.modules.invoicing.domain.model.TransactionType.SALE, // Default to
+                                                                                                           // Sale?
                                 request.lines().stream().map(this::mapLine).collect(Collectors.toList()));
 
                 return ResponseEntity.ok(createInvoiceUseCase.createInvoice(invoice));
@@ -90,6 +97,7 @@ public class InvoiceController {
                         Integer tipoDte,
                         Long folio,
                         String rutEmisor,
+                        String rutReceptor, // Added field
                         String razonSocialEmisor,
                         LocalDate fechaEmision,
                         BigDecimal montoTotal,

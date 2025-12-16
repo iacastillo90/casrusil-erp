@@ -31,9 +31,12 @@ import java.util.UUID;
 public class UserController {
 
     private final UserManagementService userService;
+    private final com.casrusil.siierpai.modules.sso.domain.port.in.InviteUserUseCase inviteUserUseCase;
 
-    public UserController(UserManagementService userService) {
+    public UserController(UserManagementService userService,
+            com.casrusil.siierpai.modules.sso.domain.port.in.InviteUserUseCase inviteUserUseCase) {
         this.userService = userService;
+        this.inviteUserUseCase = inviteUserUseCase;
     }
 
     @PostMapping
@@ -42,7 +45,8 @@ public class UserController {
         if (companyId == null) {
             return ResponseEntity.status(403).build();
         }
-        User user = userService.createUser(request.email(), request.password(), request.role(), companyId);
+        User user = userService.createUser(request.email(), request.fullName(), request.password(), request.role(),
+                companyId);
         return ResponseEntity.ok(user);
     }
 
@@ -52,9 +56,55 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    public record CreateUserRequest(String email, String password, UserRole role) {
+    @PostMapping("/invite")
+    public ResponseEntity<Void> inviteUser(@RequestBody InviteUserRequest request) {
+        CompanyId companyId = CompanyContext.getCompanyId();
+        if (companyId == null) {
+            return ResponseEntity.status(403).build();
+        }
+        inviteUserUseCase.inviteUser(request.email(), companyId, request.role().name());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/invite/validate/{token}")
+    public ResponseEntity<com.casrusil.siierpai.modules.sso.domain.model.UserInvitation> validateInvitation(
+            @PathVariable String token) {
+        return inviteUserUseCase.validateInvitation(token)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/register-invite")
+    public ResponseEntity<User> registerWithInvite(@RequestBody RegisterInviteRequest request) {
+        var invitationOpt = inviteUserUseCase.validateInvitation(request.token());
+        if (invitationOpt.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var invitation = invitationOpt.get();
+
+        // Create User
+        User user = userService.createUser(
+                invitation.getEmail(),
+                request.fullName(),
+                request.password(),
+                UserRole.valueOf(invitation.getRole()),
+                invitation.getTargetCompanyId());
+
+        // Mark Accepted
+        inviteUserUseCase.acceptInvitation(request.token());
+
+        return ResponseEntity.ok(user);
+    }
+
+    public record CreateUserRequest(String email, String fullName, String password, UserRole role) {
     }
 
     public record UpdateRoleRequest(UserRole role) {
+    }
+
+    public record InviteUserRequest(String email, UserRole role) {
+    }
+
+    public record RegisterInviteRequest(String token, String fullName, String password) {
     }
 }

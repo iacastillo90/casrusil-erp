@@ -25,35 +25,54 @@ import java.util.List;
  */
 public interface AccountingEntryRepository {
 
-    /**
-     * Persiste un asiento contable.
-     * 
-     * <p>
-     * Los asientos son inmutables una vez creados. Para correcciones,
-     * se debe crear un nuevo asiento de ajuste.
-     * 
-     * @param entry El asiento a persistir
-     */
-    void save(AccountingEntry entry);
+        /**
+         * Persiste un asiento contable.
+         * 
+         * <p>
+         * Los asientos son inmutables una vez creados. Para correcciones,
+         * se debe crear un nuevo asiento de ajuste.
+         * 
+         * @param entry El asiento a persistir
+         */
+        void save(AccountingEntry entry);
 
-    /**
-     * Lista todos los asientos de una empresa.
-     * 
-     * @param companyId ID de la empresa
-     * @return Lista de asientos contables
-     */
-    List<AccountingEntry> findByCompanyId(CompanyId companyId);
+        /**
+         * Lista todos los asientos de una empresa.
+         * 
+         * @param companyId ID de la empresa
+         * @return Lista de asientos contables
+         */
+        List<AccountingEntry> findByCompanyId(CompanyId companyId);
 
-    /**
-     * Busca los movimientos de una cuenta específica para el Libro Mayor (General
-     * Ledger).
-     *
-     * @param companyId   ID de la empresa
-     * @param accountCode Código de la cuenta
-     * @param from        Fecha inicio
-     * @param to          Fecha fin
-     * @return Lista de movimientos planos (sin saldo calculado)
-     */
-    java.util.List<com.casrusil.siierpai.modules.accounting.domain.model.AccountMovement> findMovementsByAccount(
-            CompanyId companyId, String accountCode, java.time.LocalDate from, java.time.LocalDate to);
+        /**
+         * Busca los movimientos de una cuenta específica para el Libro Mayor (General
+         * Ledger).
+         *
+         * @param companyId   ID de la empresa
+         * @param accountCode Código de la cuenta
+         * @param from        Fecha inicio
+         * @param to          Fecha fin
+         * @return Lista de movimientos planos (sin saldo calculado)
+         */
+        java.util.List<com.casrusil.siierpai.modules.accounting.domain.model.AccountMovement> findMovementsByAccount(
+                        CompanyId companyId, String accountCode, java.time.LocalDate from, java.time.LocalDate to);
+
+        /**
+         * Busca asientos para el Estado de Resultados (Clases 4, 5, 6).
+         *
+         * @param companyId ID de la empresa
+         * @param from      Fecha inicio
+         * @param to        Fecha fin
+         * @param classes   Lista de prefijos de cuenta (ej: 4, 5, 6)
+         * @return Lista de asientos que contienen líneas de esas clases
+         */
+        java.util.List<AccountingEntry> findInPeriodForClasses(
+                        CompanyId companyId, java.time.LocalDate from, java.time.LocalDate to, List<Integer> classes);
+
+        /**
+         * Elimina asientos por tipo de referencia y rango de fechas.
+         * Útil para limpieza de datos masiva.
+         */
+        void deleteByReferenceTypeAndPeriod(CompanyId companyId, String referenceType, java.time.LocalDate from,
+                        java.time.LocalDate to);
 }

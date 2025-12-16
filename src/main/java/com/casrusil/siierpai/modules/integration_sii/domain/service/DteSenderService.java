@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import com.casrusil.siierpai.modules.sso.domain.exception.CertificateNotFoundException;
+import com.casrusil.siierpai.modules.sso.domain.port.out.CompanyCertificateRepository;
+import java.util.Optional;
+import java.io.ByteArrayInputStream;
 
 /**
  * Service for sending DTEs (Electronic Tax Documents) to SII.
@@ -32,13 +36,14 @@ public class DteSenderService {
     private final com.casrusil.siierpai.modules.integration_sii.infrastructure.crypto.TedGenerator tedGenerator;
     private final com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.DteXmlBuilder dteXmlBuilder;
     private final com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.EnvioDteBuilder envioDteBuilder;
-    private final com.casrusil.siierpai.modules.integration_sii.infrastructure.adapter.out.rest.SiiUploadClient siiUploadClient;
-
     @Value("${sii.certificate.path:}")
     private String defaultCertPath;
 
     @Value("${sii.certificate.password:}")
     private String defaultCertPassword;
+
+    private final com.casrusil.siierpai.modules.integration_sii.infrastructure.adapter.out.rest.SiiUploadClient siiUploadClient;
+    private final com.casrusil.siierpai.modules.sso.domain.port.out.CompanyCertificateRepository certificateRepository;
 
     public DteSenderService(
             XmlDsigSigner xmlDsigSigner,
@@ -48,7 +53,8 @@ public class DteSenderService {
             com.casrusil.siierpai.modules.integration_sii.infrastructure.crypto.TedGenerator tedGenerator,
             com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.DteXmlBuilder dteXmlBuilder,
             com.casrusil.siierpai.modules.integration_sii.infrastructure.xml.EnvioDteBuilder envioDteBuilder,
-            com.casrusil.siierpai.modules.integration_sii.infrastructure.adapter.out.rest.SiiUploadClient siiUploadClient) {
+            com.casrusil.siierpai.modules.integration_sii.infrastructure.adapter.out.rest.SiiUploadClient siiUploadClient,
+            com.casrusil.siierpai.modules.sso.domain.port.out.CompanyCertificateRepository certificateRepository) {
         this.xmlDsigSigner = xmlDsigSigner;
         this.tokenRepository = tokenRepository;
         this.pkcs12Handler = pkcs12Handler;
@@ -57,6 +63,7 @@ public class DteSenderService {
         this.dteXmlBuilder = dteXmlBuilder;
         this.envioDteBuilder = envioDteBuilder;
         this.siiUploadClient = siiUploadClient;
+        this.certificateRepository = certificateRepository;
     }
 
     /**
@@ -122,28 +129,35 @@ public class DteSenderService {
     /**
      * Load SII certificate for a company.
      * 
-     * CURRENT: Uses default certificate from application.properties
-     * (MVP/Development)
-     * PRODUCTION: Should load company-specific certificate from database table:
-     * - Create `sii_certificates` table with columns: company_id, cert_data,
-     * password_encrypted
-     * - Implement CertificateRepository to fetch by companyId
-     * - Decrypt password using application secret key
+     * Prioritize DB storage. Fallback to properties if allowed/configured.
      * 
      * @param companyId The company ID
-     * @return SiiCertificate loaded from configured source
-     * @throws IllegalStateException if no certificate is configured
+     * @return SiiCertificate loaded
+     * @throws com.casrusil.siierpai.modules.sso.domain.exception.CertificateNotFoundException if
+     *                                                                                         not
+     *                                                                                         found
      */
     private SiiCertificate loadCertificateForCompany(CompanyId companyId) {
-        // FIXME: For production multi-tenancy, load company-specific certificate from
-        // database
-        // Each company should have their own SII certificate stored securely
-        if (defaultCertPath == null || defaultCertPath.isEmpty()) {
-            throw new IllegalStateException(
-                    "No SII certificate configured. Set sii.certificate.path in application.properties");
+        // 1. Try DB
+        java.util.Optional<com.casrusil.siierpai.modules.sso.domain.model.CompanyCertificate> certOpt = certificateRepository
+                .findByCompanyId(companyId.value());
+
+        if (certOpt.isPresent()) {
+            com.casrusil.siierpai.modules.sso.domain.model.CompanyCertificate cert = certOpt.get();
+            try (java.io.ByteArrayInputStream bis = new java.io.ByteArrayInputStream(cert.getCertificateData())) {
+                return pkcs12Handler.loadCertificate(bis, cert.getPassword());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to load certificate from DB for company " + companyId, e);
+            }
         }
 
-        logger.debug("Loading default SII certificate for company: {}", companyId);
-        return pkcs12Handler.loadCertificate(defaultCertPath, defaultCertPassword);
+        // 2. Fallback to properties (MVP)
+        if (defaultCertPath != null && !defaultCertPath.isEmpty()) {
+            logger.warn("Using default fallback certificate for company {} (Not configured in DB)", companyId);
+            return pkcs12Handler.loadCertificate(defaultCertPath, defaultCertPassword);
+        }
+
+        throw new com.casrusil.siierpai.modules.sso.domain.exception.CertificateNotFoundException(
+                "No SII certificate found for company " + companyId);
     }
 }

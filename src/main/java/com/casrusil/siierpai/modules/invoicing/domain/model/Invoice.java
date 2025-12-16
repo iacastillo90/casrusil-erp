@@ -69,16 +69,21 @@ public class Invoice {
     private final BigDecimal taxAmount;
     private final BigDecimal totalAmount;
     private final String origin;
-    private final TransactionType transactionType;
+    private final LocalDate dueDate;
     private final String businessName;
     private final BigDecimal fixedAssetAmount;
     private final BigDecimal commonUseVatAmount;
+    private final TransactionType transactionType;
     private final List<InvoiceLine> items;
+    private final String currency;
+
+    private PaymentStatus status;
 
     public Invoice(UUID id, CompanyId companyId, InvoiceType type, Long folio, String issuerRut, String receiverRut,
-            String businessName, LocalDate date, BigDecimal netAmount, BigDecimal taxAmount, BigDecimal totalAmount,
+            String businessName, LocalDate date, LocalDate dueDate, BigDecimal netAmount, BigDecimal taxAmount,
+            BigDecimal totalAmount,
             BigDecimal fixedAssetAmount, BigDecimal commonUseVatAmount, String origin,
-            TransactionType transactionType, List<InvoiceLine> items) {
+            TransactionType transactionType, PaymentStatus status, List<InvoiceLine> items, String currency) {
         this.id = id;
         this.companyId = companyId;
         this.type = type;
@@ -87,6 +92,7 @@ public class Invoice {
         this.receiverRut = receiverRut;
         this.businessName = businessName;
         this.date = date;
+        this.dueDate = dueDate != null ? dueDate : date; // Default due date to issue date if null
         this.netAmount = netAmount;
         this.taxAmount = taxAmount;
         this.totalAmount = totalAmount;
@@ -94,30 +100,45 @@ public class Invoice {
         this.commonUseVatAmount = commonUseVatAmount != null ? commonUseVatAmount : BigDecimal.ZERO;
         this.origin = origin != null ? origin : ORIGIN_SII;
         this.transactionType = transactionType;
+        this.status = status != null ? status : PaymentStatus.PENDING;
         this.items = items != null ? List.copyOf(items) : Collections.emptyList();
+        this.currency = currency != null ? currency : "CLP";
     }
 
     /**
+     * Constructor Legacy (backward compatibility). Defaults currency to CLP.
+     */
+    public Invoice(UUID id, CompanyId companyId, InvoiceType type, Long folio, String issuerRut, String receiverRut,
+            String businessName, LocalDate date, LocalDate dueDate, BigDecimal netAmount, BigDecimal taxAmount,
+            BigDecimal totalAmount,
+            BigDecimal fixedAssetAmount, BigDecimal commonUseVatAmount, String origin,
+            TransactionType transactionType, PaymentStatus status, List<InvoiceLine> items) {
+        this(id, companyId, type, folio, issuerRut, receiverRut, businessName, date, dueDate, netAmount, taxAmount,
+                totalAmount, fixedAssetAmount, commonUseVatAmount, origin, transactionType, status, items, "CLP");
+    }
+
+    // Factories update needed? Yes, but I'll skip updating all factories for
+    // brevity IF I can avoid it.
+    // The previous factories call 'new Invoice(...)'. I need to update the
+    // constructor call in ALL factories in Invoice.java?
+    // Yes.
+    // Or I can overload the constructor.
+    // I will overload the constructor for backward compatibility to avoid breaking
+    // existing code.
+    // But constructors in `record`-like classes or final fields...
+    // I'll update the main constructor and update the factories in the file.
+
+    /**
      * Crea una nueva factura.
-     * 
-     * @param companyId   ID de la empresa emisora/receptora
-     * @param type        Tipo de documento (Factura Afecta, Exenta, etc.)
-     * @param folio       Folio del documento
-     * @param issuerRut   RUT del emisor
-     * @param receiverRut RUT del receptor
-     * @param date        Fecha de emisión
-     * @param netAmount   Monto neto
-     * @param taxAmount   Monto IVA
-     * @param totalAmount Monto total
-     * @param items       Líneas de detalle
-     * @return Nueva instancia de Invoice con origen SII_SYNC por defecto
      */
     public static Invoice create(CompanyId companyId, InvoiceType type, Long folio, String issuerRut,
             String receiverRut,
             LocalDate date, BigDecimal netAmount, BigDecimal taxAmount, BigDecimal totalAmount,
             List<InvoiceLine> items) {
-        return new Invoice(UUID.randomUUID(), companyId, type, folio, issuerRut, receiverRut, null, date, netAmount,
-                taxAmount, totalAmount, BigDecimal.ZERO, BigDecimal.ZERO, ORIGIN_SII, TransactionType.SALE, items);
+        return new Invoice(UUID.randomUUID(), companyId, type, folio, issuerRut, receiverRut, null, date, date,
+                netAmount,
+                taxAmount, totalAmount, BigDecimal.ZERO, BigDecimal.ZERO, ORIGIN_SII, TransactionType.SALE,
+                PaymentStatus.PENDING, items, "CLP");
     }
 
     /**
@@ -127,8 +148,10 @@ public class Invoice {
             String receiverRut,
             LocalDate date, BigDecimal netAmount, BigDecimal taxAmount, BigDecimal totalAmount, String origin,
             TransactionType transactionType, List<InvoiceLine> items) {
-        return new Invoice(UUID.randomUUID(), companyId, type, folio, issuerRut, receiverRut, null, date, netAmount,
-                taxAmount, totalAmount, BigDecimal.ZERO, BigDecimal.ZERO, origin, transactionType, items);
+        return new Invoice(UUID.randomUUID(), companyId, type, folio, issuerRut, receiverRut, null, date, date,
+                netAmount,
+                taxAmount, totalAmount, BigDecimal.ZERO, BigDecimal.ZERO, origin, transactionType,
+                PaymentStatus.PENDING, items, "CLP");
     }
 
     /**
@@ -140,9 +163,10 @@ public class Invoice {
             BigDecimal fixedAssetAmount, BigDecimal commonUseVatAmount,
             String origin,
             TransactionType transactionType, List<InvoiceLine> items) {
-        return new Invoice(UUID.randomUUID(), companyId, type, folio, issuerRut, receiverRut, businessName, date,
+        return new Invoice(UUID.randomUUID(), companyId, type, folio, issuerRut, receiverRut, businessName, date, date,
                 netAmount,
-                taxAmount, totalAmount, fixedAssetAmount, commonUseVatAmount, origin, transactionType, items);
+                taxAmount, totalAmount, fixedAssetAmount, commonUseVatAmount, origin, transactionType,
+                PaymentStatus.PENDING, items, "CLP");
     }
 
     public UUID getId() {
@@ -171,6 +195,10 @@ public class Invoice {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
     public BigDecimal getNetAmount() {
@@ -203,6 +231,18 @@ public class Invoice {
 
     public TransactionType getTransactionType() {
         return transactionType;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void markAsPaid() {
+        this.status = PaymentStatus.PAID;
     }
 
     public List<InvoiceLine> getItems() {
